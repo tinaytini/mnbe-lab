@@ -23,7 +23,7 @@ export default function ContactPage() {
                         {
                             icon: "📍",
                             label: "Address",
-                            value: "Institute of Nanoscience\nEngineering Building, Room 4.12\nUniversity Campus",
+                            value: "Saadiyat Marina District\nAbu Dhabi - ОАЭ",
                         },
                         {
                             icon: "✉️",
