@@ -23,7 +23,7 @@ export default function ContactPage() {
                         {
                             icon: "📍",
                             label: "Address",
-                            value: "Saadiyat Marina District\nAbu Dhabi - ОАЭ",
+                            value: "Saadiyat Marina District\nAbu Dhabi - UAE",
                         },
                         {
                             icon: "✉️",
