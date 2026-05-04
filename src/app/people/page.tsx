@@ -11,7 +11,7 @@ export default async function PeoplePage() {
     const allMembers = await db.select().from(members).orderBy(asc(members.createdAt));
 
     return (
-        <main className="min-h-screen bg-slate-50 pt-24 pb-20">
+        <main className="bg-slate-50 pt-24 pb-20">
             {/* Header */}
             <section className="max-w-5xl mx-auto px-6 lg:px-8 text-center mb-16">
                 <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-100 bg-brand-50 text-brand-500 text-sm font-medium mb-6">
