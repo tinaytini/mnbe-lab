@@ -33,7 +33,7 @@ export default async function PublicationsPage() {
                 </p>
             </section>
 
-            {/* Achievements */}
+            {/* Achievements - Temporarily Commented Out
             <section className="max-w-5xl mx-auto px-6 lg:px-8 mb-16">
                 <h2 className="text-xl font-semibold text-slate-800 mb-6">Highlights</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -49,6 +49,7 @@ export default async function PublicationsPage() {
                     ))}
                 </div>
             </section>
+            */}
 
             {/* Publications list */}
             <section className="max-w-5xl mx-auto px-6 lg:px-8">
