@@ -17,11 +17,7 @@ export default async function PeoplePage() {
 
             {/* Header (Original) */}
             <section className="max-w-5xl mx-auto px-6 lg:px-8 text-center mb-16">
-                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-100 bg-brand-50 text-brand-500 text-sm font-medium mb-6">
-                    <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
-                    The Team
-                </span>
-                <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 tracking-tight mb-4">People</h1>
+
                 <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
                     Our diverse, interdisciplinary team brings together expertise from
                     biochemistry, engineering, physics, and computer science.
