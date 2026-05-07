@@ -11,8 +11,33 @@ export default async function PeoplePage() {
     const allMembers = await db.select().from(members).orderBy(asc(members.createdAt));
 
     return (
-        <main className="bg-slate-50 pt-24 pb-20">
-            {/* Header */}
+        <main className="bg-slate-50 pt-20 pb-20">
+            {/* Hero Section */}
+            <section className="relative h-[400px] sm:h-[500px] overflow-hidden mb-20">
+                <div className="absolute inset-0 bg-slate-900">
+                    {/* The user will replace src with their actual group photo */}
+                    <img 
+                        src="/uploads/group-photo.jpg" 
+                        alt="MNBE Lab Group Photo" 
+                        className="w-full h-full object-cover opacity-60"
+                        onError={(e) => {
+                            // Falls back to a nice gradient if image is missing
+                            (e.target as HTMLImageElement).style.display = 'none';
+                            (e.target as HTMLImageElement).parentElement!.style.background = 'linear-gradient(to bottom right, #57068c, #1e0231)';
+                        }}
+                    />
+                </div>
+                <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
+                    <h1 className="text-4xl sm:text-6xl font-bold text-white tracking-tight mb-4">
+                        Meet Our Team
+                    </h1>
+                    <div className="w-20 h-1 bg-brand-400 rounded-full" />
+                </div>
+                {/* Bottom wave/decoration */}
+                <div className="absolute bottom-0 left-0 right-0 h-24 bg-linear-to-t from-slate-50 to-transparent z-10" />
+            </section>
+
+            {/* Header (Original) */}
             <section className="max-w-5xl mx-auto px-6 lg:px-8 text-center mb-16">
                 <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-100 bg-brand-50 text-brand-500 text-sm font-medium mb-6">
                     <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
