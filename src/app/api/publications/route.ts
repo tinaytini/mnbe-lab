@@ -1,12 +1,12 @@
 import { db } from "@/db";
 import { publications } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 // GET /api/publications — list all
 export async function GET() {
     try {
-        const rows = await db.select().from(publications).orderBy(publications.createdAt);
+        const rows = await db.select().from(publications).orderBy(desc(publications.createdAt));
         return NextResponse.json(rows);
     } catch (err) {
         console.error(err);

@@ -15,7 +15,7 @@ export default async function PublicationsPage() {
     const pubs = await db
         .select()
         .from(publications)
-        .orderBy(asc(publications.year), asc(publications.createdAt));
+        .orderBy(asc(publications.createdAt));
 
     return (
         <main className="bg-white pt-24 pb-20">
