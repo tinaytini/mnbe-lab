@@ -45,7 +45,7 @@ export default function PeopleGrid({ allMembers }: { allMembers: Member[] }) {
                                 {m.name}
                             </h3>
                             <p className="text-xs font-semibold text-brand-600 uppercase tracking-wider mt-1 mb-1.5">{m.role}</p>
-                            {m.originCountry && <span className="text-xs text-slate-500 capitalize normal-case font-medium">🌍 {m.originCountry}</span>}
+                            {m.originCountry && <span className="text-xs text-slate-500 capitalize normal-case font-medium">{m.originCountry}</span>}
                             {m.email && <p className="text-xs text-slate-400 mt-2 truncate w-full" onClick={e => e.stopPropagation()}>✉️ <a href={`mailto:${m.email}`} className="hover:text-brand-500 hover:underline">{m.email}</a></p>}
                         </div>
                     </div>
@@ -80,7 +80,7 @@ export default function PeopleGrid({ allMembers }: { allMembers: Member[] }) {
                             <div className="flex flex-col justify-center">
                                 <h3 className="text-2xl font-bold text-slate-900">{selected.name}</h3>
                                 <p className="text-sm font-semibold text-brand-600 uppercase tracking-wider mt-1 mb-2">{selected.role}</p>
-                                {selected.originCountry && <span className="text-sm text-slate-500 capitalize normal-case mb-2">🌍 {selected.originCountry}</span>}
+                                {selected.originCountry && <span className="text-sm text-slate-500 capitalize normal-case mb-2">{selected.originCountry}</span>}
                                 {selected.email && (
                                     <a href={`mailto:${selected.email}`} className="text-sm font-medium text-brand-500 hover:underline w-max mx-auto sm:mx-0">
                                         ✉️ {selected.email}
