@@ -24,8 +24,7 @@ export default function PeopleHero() {
                 </h1>
                 <div className="w-20 h-1 bg-brand-400 rounded-full" />
             </div>
-            {/* Bottom wave/decoration */}
-            <div className="absolute bottom-0 left-0 right-0 h-24 bg-linear-to-t from-slate-50 to-transparent z-10" />
+
         </section>
     );
 }
