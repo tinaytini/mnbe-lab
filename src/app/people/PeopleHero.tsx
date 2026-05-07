@@ -7,7 +7,7 @@ export default function PeopleHero() {
                 <img 
                     src="/uploads/group-photo.jpg" 
                     alt="MNBE Lab Group Photo" 
-                    className="w-full h-full object-cover opacity-60"
+                    className="w-full h-full object-cover object-top opacity-60"
                     onError={(e) => {
                         // Falls back to a nice gradient if image is missing
                         (e.target as HTMLImageElement).style.display = 'none';
