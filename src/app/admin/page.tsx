@@ -187,10 +187,10 @@ type Tab = "overview" | "publications" | "news" | "people" | "research" | "activ
 const tabs: { id: Tab; label: string; icon: string }[] = [
     { id: "overview", label: "Overview", icon: "📊" },
     { id: "publications", label: "Publications", icon: "📄" },
-    { id: "news", label: "News", icon: "📰" },
+    { id: "news", label: "Announcements", icon: "📰" },
     { id: "people", label: "People", icon: "👥" },
     { id: "research", label: "Research Areas", icon: "🔬" },
-    { id: "activities", label: "Group Activities", icon: "🎉" },
+    { id: "activities", label: "News", icon: "🎉" },
 ];
 
 // ─── Publications Tab ─────────────────────────────────────────────────────────
@@ -393,16 +393,16 @@ function NewsTab() {
     return (
         <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-slate-800">News <Badge color="amber">{items.length}</Badge></h2>
+                <h2 className="text-lg font-semibold text-slate-800">Announcements <Badge color="amber">{items.length}</Badge></h2>
                 <div className="flex gap-2">
                     <Btn variant="secondary" size="sm" onClick={load}>↻ Refresh</Btn>
-                    {!showForm && <Btn onClick={() => { setAdding(true); setEditing(null); }}>+ Add News</Btn>}
+                    {!showForm && <Btn onClick={() => { setAdding(true); setEditing(null); }}>+ Add Announcement</Btn>}
                 </div>
             </div>
 
             {showForm && (
                 <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6">
-                    <h3 className="text-sm font-semibold text-slate-700 mb-4">{editing ? "Edit News Item" : "New News Item"}</h3>
+                    <h3 className="text-sm font-semibold text-slate-700 mb-4">{editing ? "Edit Announcement" : "New Announcement"}</h3>
                     <div className="flex flex-col gap-4">
                         <Input label="Date" value={form.date} onChange={(v) => setForm((f) => ({ ...f, date: v }))} placeholder="March 2025" />
                         <Input label="Title" value={form.title} onChange={(v) => setForm((f) => ({ ...f, title: v }))} placeholder="Headline…" />
@@ -457,7 +457,7 @@ function NewsTab() {
                 <div className="flex items-center justify-center py-16 text-slate-400 text-sm">Loading…</div>
             ) : (
                 <div className="flex flex-col gap-3">
-                    {items.length === 0 && !showForm && <div className="text-center py-12 text-slate-400 text-sm">No news yet. Click &quot;+ Add News&quot; to get started.</div>}
+                    {items.length === 0 && !showForm && <div className="text-center py-12 text-slate-400 text-sm">No announcements yet. Click &quot;+ Add Announcement&quot; to get started.</div>}
                     {items.map((n) => (
                         <div key={n.id} className="p-5 bg-white border border-slate-200 rounded-2xl hover:border-slate-300 transition-colors">
                             <div className="flex items-start justify-between gap-3">
@@ -836,7 +836,7 @@ function ActivitiesTab() {
     };
 
     const del = async (id: number) => {
-        if (!confirm("Delete this activity?")) return;
+        if (!confirm("Delete this news item?")) return;
         await fetch(`/api/activities/${id}`, { method: "DELETE" });
         setItems((prev) => prev.filter((a) => a.id !== id));
     };
@@ -853,16 +853,16 @@ function ActivitiesTab() {
     return (
         <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-slate-800">Group Activities <Badge color="amber">{items.length}</Badge></h2>
+                <h2 className="text-lg font-semibold text-slate-800">News <Badge color="amber">{items.length}</Badge></h2>
                 <div className="flex gap-2">
                     <Btn variant="secondary" size="sm" onClick={load}>↻ Refresh</Btn>
-                    {!showForm && <Btn onClick={() => { setAdding(true); setEditing(null); }}>+ Add Activity</Btn>}
+                    {!showForm && <Btn onClick={() => { setAdding(true); setEditing(null); }}>+ Add News Item</Btn>}
                 </div>
             </div>
 
             {showForm && (
                 <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6">
-                    <h3 className="text-sm font-semibold text-slate-700 mb-4">{editing ? "Edit Activity" : "New Activity"}</h3>
+                    <h3 className="text-sm font-semibold text-slate-700 mb-4">{editing ? "Edit News Item" : "New News Item"}</h3>
                     <div className="grid grid-cols-2 gap-4 mb-4">
                         <Input label="Title" value={form.title} onChange={(v) => setForm((f) => ({ ...f, title: v }))} placeholder="Weekly Research Seminar" />
                         <Input label="Date" value={form.date} onChange={(v) => setForm((f) => ({ ...f, date: v }))} placeholder="Every Thursday, 10:00 AM" />
@@ -921,7 +921,7 @@ function ActivitiesTab() {
                 <div className="flex items-center justify-center py-16 text-slate-400 text-sm">Loading…</div>
             ) : (
                 <div className="flex flex-col gap-3">
-                    {items.length === 0 && !showForm && <div className="text-center py-12 text-slate-400 text-sm">No activities yet. Click &quot;+ Add Activity&quot; to get started.</div>}
+                    {items.length === 0 && !showForm && <div className="text-center py-12 text-slate-400 text-sm">No news yet. Click &quot;+ Add News Item&quot; to get started.</div>}
                     {items.map((a) => (
                         <div key={a.id} className="p-5 bg-white border border-slate-200 rounded-2xl hover:border-slate-300 transition-colors">
                             <div className="flex items-start gap-4">
@@ -959,7 +959,7 @@ function ActivitiesTab() {
 function OverviewTab({ onNav }: { onNav: (tab: Tab) => void }) {
     const cards = [
         { label: "Publications", value: seedPublications.length, color: "blue", tab: "publications" as Tab },
-        { label: "News Items", value: seedNews.length, color: "amber", tab: "news" as Tab },
+        { label: "Announcements", value: seedNews.length, color: "amber", tab: "news" as Tab },
         { label: "Team Members", value: seedMembers.length, color: "purple", tab: "people" as Tab },
         { label: "Research Areas", value: seedResearch.length, color: "green", tab: "research" as Tab },
     ];

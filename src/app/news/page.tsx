@@ -13,7 +13,7 @@ const categoryMeta: Record<string, { color: string; border: string }> = {
 
 const defaultMeta = { color: "from-slate-50 to-slate-100", border: "border-slate-200" };
 
-export default async function GroupActivitiesPage() {
+export default async function NewsPage() {
     const activities = await db.select().from(groupActivities).orderBy(desc(groupActivities.createdAt));
 
     // Group by category
@@ -36,10 +36,10 @@ export default async function GroupActivitiesPage() {
                     Life in the Lab
                 </span>
                 <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 tracking-tight mb-4">
-                    Group Activities
+                    News
                 </h1>
                 <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
-                    Beyond the bench — how we collaborate, learn, and grow together as a research community.
+                    Latest updates, collaborative events, and highlights from our research community.
                 </p>
             </section>
 

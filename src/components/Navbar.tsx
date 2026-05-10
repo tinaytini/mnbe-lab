@@ -19,7 +19,7 @@ const links = [
     { label: "Publications & Achievements", href: "/publications" },
     { label: "People", href: "/people" },
     { label: "Facilities", href: "/facilities" },
-    { label: "Group Activities", href: "/group-activities" },
+    { label: "News", href: "/news" },
     { label: "Contact", href: "/contact" },
 ];
 
