@@ -43,20 +43,20 @@ export default function BiomechanicsPage() {
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div className="rounded-2xl bg-slate-50 border border-slate-200 aspect-[4/3] relative overflow-hidden shadow-xs hover:border-brand-200 transition-all hover:shadow-md group p-4">
+                        <div className="rounded-2xl aspect-[4/3] relative overflow-hidden group">
                             <Image 
                                 src="/uploads/High-Throughput-Drug-Screening-1.jpg" 
                                 alt="High Throughput Drug Screening" 
                                 fill 
-                                className="object-contain p-2"
+                                className="object-contain"
                             />
                         </div>
-                        <div className="rounded-2xl bg-slate-50 border border-slate-200 aspect-[4/3] relative overflow-hidden shadow-xs hover:border-brand-200 transition-all hover:shadow-md group p-4">
+                        <div className="rounded-2xl aspect-[4/3] relative overflow-hidden group">
                             <Image 
                                 src="/uploads/Diabetes-text-1.jpg" 
                                 alt="High-resolution microscopy" 
                                 fill 
-                                className="object-contain p-2"
+                                className="object-contain"
                             />
                         </div>
                     </div>
@@ -68,12 +68,12 @@ export default function BiomechanicsPage() {
                         </p>
                     </div>
                     
-                    <div className="rounded-2xl bg-slate-50 border border-slate-200 aspect-video relative overflow-hidden shadow-xs hover:border-brand-200 transition-all hover:shadow-lg group p-6">
+                    <div className="rounded-2xl aspect-video relative overflow-hidden group">
                         <Image 
                             src="/uploads/Neuromuscular-Disease-1.jpg" 
                             alt="Neuromuscular Disease Study" 
                             fill 
-                            className="object-contain p-4"
+                            className="object-contain"
                         />
                     </div>
                 </section>
@@ -92,28 +92,28 @@ export default function BiomechanicsPage() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="rounded-2xl bg-slate-50 border border-slate-200 aspect-square relative overflow-hidden shadow-xs hover:border-brand-200 transition-all hover:shadow-md group p-3">
+                        <div className="rounded-2xl aspect-square relative overflow-hidden group">
                             <Image 
                                 src="/uploads/Dispensing-1.jpg" 
                                 alt="Microfluidic dispensing system" 
                                 fill 
-                                className="object-contain p-2"
+                                className="object-contain"
                             />
                         </div>
-                        <div className="rounded-2xl bg-slate-50 border border-slate-200 aspect-square relative overflow-hidden shadow-xs hover:border-brand-200 transition-all hover:shadow-md group p-3">
+                        <div className="rounded-2xl aspect-square relative overflow-hidden group">
                             <Image 
                                 src="/uploads/DTIP-1.jpg" 
                                 alt="SEM image of dispensing tip" 
                                 fill 
-                                className="object-contain p-2"
+                                className="object-contain"
                             />
                         </div>
-                        <div className="rounded-2xl bg-slate-50 border border-slate-200 aspect-square relative overflow-hidden shadow-xs hover:border-brand-200 transition-all hover:shadow-md group p-3">
+                        <div className="rounded-2xl aspect-square relative overflow-hidden group">
                             <Image 
                                 src="/uploads/Comsol-dtip-1.jpg" 
                                 alt="Comsol simulation" 
                                 fill 
-                                className="object-contain p-2"
+                                className="object-contain"
                             />
                         </div>
                     </div>
