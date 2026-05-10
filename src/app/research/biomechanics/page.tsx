@@ -3,41 +3,40 @@ import { Database, Zap } from "lucide-react";
 
 export default function BiomechanicsPage() {
     return (
-        <main className="bg-white pt-24 pb-20">
-            {/* Header section with Hero Image */}
-            <section className="relative max-w-7xl mx-auto px-6 lg:px-8 mb-16 h-[300px] rounded-[2.5rem] overflow-hidden flex items-center justify-center group shadow-xl">
+        <main className="bg-slate-50 pt-20">
+            {/* Hero Section */}
+            <section className="relative h-[550px] flex items-center justify-center bg-slate-900 overflow-hidden">
                 <Image 
                     src="/uploads/biomechanics-hero.png" 
-                    alt="Research Hero" 
+                    alt="Biomechanics"
                     fill 
-                    className="object-cover opacity-90"
+                    className="object-cover opacity-60"
                     priority
                 />
-                <div className="absolute inset-0 bg-linear-to-b from-slate-900/60 to-slate-900/40" />
-                <div className="relative z-10 text-center">
-                    <span className="inline-flex items-center gap-2 px-4 py-1 rounded-full border border-white/20 bg-white/10 text-white text-xs font-medium mb-4 backdrop-blur-md">
-                        <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-pulse" />
-                        Research Areas
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900/80" />
+                <div className="relative z-10 text-center px-6 max-w-4xl">
+                    <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-400/30 bg-brand-500/10 text-brand-300 text-sm font-medium mb-6 backdrop-blur-md">
+                        Research Area
                     </span>
-                    <h1 className="text-3xl sm:text-5xl font-bold text-white tracking-tight mb-3 drop-shadow-lg">
+                    <h1 className="text-5xl sm:text-7xl font-bold text-white tracking-tight mb-6">
                         Biomechanics
                     </h1>
-                    <p className="text-base text-slate-200 max-w-xl mx-auto drop-shadow-md">
+                    <p className="text-xl text-slate-200 max-w-2xl mx-auto leading-relaxed font-light">
                         Advanced microfluidic platforms for mechanical analysis of biological systems.
                     </p>
                 </div>
             </section>
 
-            {/* Exact Content Sections */}
-            <div className="max-w-5xl mx-auto px-6 lg:px-8 space-y-20">
+            {/* Content Sections */}
+            <div className="max-w-7xl mx-auto px-6 lg:px-8 -mt-24 relative z-20 space-y-12 pb-24">
                 
-                {/* Section 1: Micropillar Screening */}
-                <section>
+                {/* Introduction/First Project Card */}
+                <section className="bg-white rounded-[2.5rem] shadow-xl border border-slate-200 p-8 sm:p-12">
                     <div className="flex items-center gap-3 mb-8">
                         <div className="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center text-brand-500">
                             <Database className="w-5 h-5" />
                         </div>
-                        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
+                        <h2 className="text-2xl font-bold text-slate-900 leading-tight">
                             Micropillar based high throughput drug screening using C. elegans
                         </h2>
                     </div>
@@ -78,15 +77,13 @@ export default function BiomechanicsPage() {
                     </div>
                 </section>
 
-                <hr className="border-slate-100" />
-
                 {/* Section 2: Single Worm Dispensing */}
-                <section>
+                <section className="bg-white rounded-[2.5rem] shadow-xl border border-slate-200 p-8 sm:p-12">
                     <div className="flex items-center gap-3 mb-8">
                         <div className="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center text-brand-500">
                             <Zap className="w-5 h-5" />
                         </div>
-                        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
+                        <h2 className="text-2xl font-bold text-slate-900 leading-tight">
                             Dispensing of single C. elegan worms using microfluidics and pressure boundary condition
                         </h2>
                     </div>
