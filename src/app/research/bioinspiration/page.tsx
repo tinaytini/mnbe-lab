@@ -1,4 +1,4 @@
-import React from "react";
+import Image from "next/image";
 import { Leaf, Wind, Droplets, Target } from "lucide-react";
 
 export default function BioinspirationPage() {
@@ -6,13 +6,13 @@ export default function BioinspirationPage() {
         <main className="bg-slate-50 pt-20">
             {/* Hero Section */}
             <section className="relative h-[550px] flex items-center justify-center bg-slate-900 overflow-hidden">
-                <div className="absolute inset-0 opacity-50">
-                    <img 
-                        src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&q=80&w=2000" 
-                        alt="Bioinspiration"
-                        className="w-full h-full object-cover"
-                    />
-                </div>
+                <Image 
+                    src="/uploads/bioinspiration-hero.jpg" 
+                    alt="Bioinspiration"
+                    fill 
+                    className="object-cover opacity-50"
+                    priority
+                />
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900/80" />
                 <div className="relative z-10 text-center px-6 max-w-4xl">
                     <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-emerald-400/30 bg-emerald-500/10 text-emerald-300 text-sm font-medium mb-6 backdrop-blur-md">
@@ -97,11 +97,12 @@ export default function BioinspirationPage() {
                             </div>
                         </div>
                     </div>
-                    <div className="aspect-square rounded-[3rem] overflow-hidden bg-slate-800 border border-slate-700">
-                        <img 
-                            src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=1000" 
+                    <div className="aspect-square rounded-[3rem] overflow-hidden bg-slate-800 border border-slate-700 relative">
+                        <Image 
+                            src="/uploads/bioinspiration-nature.jpg" 
                             alt="Nature Pattern"
-                            className="w-full h-full object-cover"
+                            fill
+                            className="object-cover"
                         />
                     </div>
                 </div>

@@ -7,7 +7,7 @@ export default function BiosensingPage() {
             {/* Hero Section */}
             <section className="relative h-[550px] flex items-center justify-center bg-slate-900 overflow-hidden">
                 <Image 
-                    src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&q=80&w=2000" 
+                    src="/uploads/biosensing-hero.jpg" 
                     alt="Biosensing"
                     fill 
                     className="object-cover opacity-60"
@@ -34,7 +34,7 @@ export default function BiosensingPage() {
                         <div className="order-2 lg:order-1">
                             <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl relative bg-slate-100">
                                 <Image 
-                                    src="https://images.unsplash.com/photo-1581093588401-fbb62a02f120?auto=format&fit=crop&q=80&w=1000" 
+                                    src="/uploads/biosensing-nanochip.jpg" 
                                     alt="Nanochip"
                                     fill
                                     className="object-cover"
