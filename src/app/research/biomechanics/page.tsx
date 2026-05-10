@@ -21,61 +21,78 @@ export default function BiomechanicsPage() {
             {/* Exact Content Sections */}
             <div className="max-w-5xl mx-auto px-6 lg:px-8 space-y-24">
                 
-                {/* Section 1 */}
-                <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center text-brand-500">
-                                <Database className="w-5 h-5" />
-                            </div>
-                            <h2 className="text-2xl font-bold text-slate-900 leading-tight">
-                                Micropillar based high throughput drug screening using C. elegans
-                            </h2>
+                {/* Section 1: Micropillar Screening */}
+                <section>
+                    <div className="flex items-center gap-3 mb-8">
+                        <div className="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center text-brand-500">
+                            <Database className="w-5 h-5" />
                         </div>
-                        <div className="space-y-4 text-slate-600 leading-relaxed">
-                            <p>
-                                The method can be extended to study other muscle impacting disease like ALS, Parkinson disease etc.
-                            </p>
+                        <h2 className="text-2xl font-bold text-slate-900 leading-tight">
+                            Micropillar based high throughput drug screening using C. elegans
+                        </h2>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div className="rounded-3xl bg-slate-50 border border-slate-200 aspect-video flex items-center justify-center text-slate-400 font-medium overflow-hidden shadow-xs hover:border-brand-200 transition-colors cursor-help">
+                            <div className="flex flex-col items-center gap-2 text-center px-6">
+                                <Activity className="w-8 h-8 opacity-20" />
+                                <p className="text-sm">Image Placeholder 1: <br/> Micropillar based high throughput drug screening platform</p>
+                            </div>
+                        </div>
+                        <div className="rounded-3xl bg-slate-50 border border-slate-200 aspect-video flex items-center justify-center text-slate-400 font-medium overflow-hidden shadow-xs hover:border-brand-200 transition-colors cursor-help">
+                            <div className="flex flex-col items-center gap-2 text-center px-6">
+                                <Microscope className="w-8 h-8 opacity-20" />
+                                <p className="text-sm">Image Placeholder 2: <br/> High-resolution microscopy of C. elegans in array</p>
+                            </div>
                         </div>
                     </div>
-                    <div className="rounded-3xl bg-slate-50 border border-slate-200 aspect-video flex items-center justify-center text-slate-400 font-medium overflow-hidden shadow-xs hover:border-brand-200 transition-colors cursor-help">
+
+                    <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex gap-4 items-start">
+                        <div className="w-1.5 h-1.5 rounded-full bg-brand-500 mt-2 shrink-0" />
+                        <p className="text-slate-600 leading-relaxed">
+                            The method can be extended to study other muscle impacting disease like ALS, Parkinson disease etc.
+                        </p>
+                    </div>
+                    
+                    <div className="mt-6 rounded-3xl bg-slate-50 border border-slate-200 aspect-[21/9] flex items-center justify-center text-slate-400 font-medium overflow-hidden shadow-xs hover:border-brand-200 transition-colors cursor-help">
                         <div className="flex flex-col items-center gap-2 text-center px-6">
                             <Activity className="w-8 h-8 opacity-20" />
-                            <p className="text-sm">Placeholder for Research Image: <br/> Micropillar Based Screening Platform</p>
+                            <p className="text-sm">Image Placeholder 3: <br/> Comparative study of muscle impacting diseases (ALS, Parkinson&apos;s)</p>
                         </div>
                     </div>
                 </section>
 
                 <hr className="border-slate-100" />
 
-                {/* Section 2 */}
-                <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div className="lg:order-2">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center text-brand-500">
-                                <Zap className="w-5 h-5" />
-                            </div>
-                            <h2 className="text-2xl font-bold text-slate-900 leading-tight">
-                                Dispensing of single C. elegan worms using microfluidics and pressure boundary condition
-                            </h2>
+                {/* Section 2: Single Worm Dispensing */}
+                <section>
+                    <div className="flex items-center gap-3 mb-8">
+                        <div className="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center text-brand-500">
+                            <Zap className="w-5 h-5" />
                         </div>
-                        <div className="space-y-4 text-slate-600 leading-relaxed">
-                            <ul className="space-y-3">
-                                <li className="flex items-start gap-3">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-brand-500 mt-2 shrink-0" />
-                                    <span>SEM image of the dispensing tip using NanoScribe 3d printer</span>
-                                </li>
-                                <li className="flex items-start gap-3">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-brand-500 mt-2 shrink-0" />
-                                    <span>Comsol simulation to understand flow mechanics inside the tip</span>
-                                </li>
-                            </ul>
-                        </div>
+                        <h2 className="text-2xl font-bold text-slate-900 leading-tight">
+                            Dispensing of single C. elegan worms using microfluidics and pressure boundary condition
+                        </h2>
                     </div>
-                    <div className="lg:order-1 rounded-3xl bg-slate-50 border border-slate-200 aspect-video flex items-center justify-center text-slate-400 font-medium overflow-hidden shadow-xs hover:border-brand-200 transition-colors cursor-help">
-                        <div className="flex flex-col items-center gap-2 text-center px-6">
-                            <Microscope className="w-8 h-8 opacity-20" />
-                            <p className="text-sm">Placeholder for Research Image: <br/> Single Worm Dispensing System & Simulation</p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="rounded-3xl bg-slate-50 border border-slate-200 aspect-square flex items-center justify-center text-slate-400 font-medium overflow-hidden shadow-xs hover:border-brand-200 transition-colors cursor-help">
+                            <div className="flex flex-col items-center gap-2 text-center px-4">
+                                <Activity className="w-6 h-6 opacity-20" />
+                                <p className="text-xs">Image Placeholder 4: <br/> Microfluidic dispensing system setup</p>
+                            </div>
+                        </div>
+                        <div className="rounded-3xl bg-slate-50 border border-slate-200 aspect-square flex items-center justify-center text-slate-400 font-medium overflow-hidden shadow-xs hover:border-brand-200 transition-colors cursor-help">
+                            <div className="flex flex-col items-center gap-2 text-center px-4">
+                                <Microscope className="w-6 h-6 opacity-20" />
+                                <p className="text-xs">Image Placeholder 5: <br/> SEM image of the dispensing tip (NanoScribe 3d printer)</p>
+                            </div>
+                        </div>
+                        <div className="rounded-3xl bg-slate-50 border border-slate-200 aspect-square flex items-center justify-center text-slate-400 font-medium overflow-hidden shadow-xs hover:border-brand-200 transition-colors cursor-help">
+                            <div className="flex flex-col items-center gap-2 text-center px-4">
+                                <Zap className="w-6 h-6 opacity-20" />
+                                <p className="text-xs">Image Placeholder 6: <br/> Comsol simulation of flow mechanics inside the tip</p>
+                            </div>
                         </div>
                     </div>
                 </section>
