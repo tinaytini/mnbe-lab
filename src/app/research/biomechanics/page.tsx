@@ -7,7 +7,7 @@ export default function BiomechanicsPage() {
             {/* Header section with Hero Image */}
             <section className="relative max-w-7xl mx-auto px-6 lg:px-8 mb-16 h-[300px] rounded-[2.5rem] overflow-hidden flex items-center justify-center group shadow-xl">
                 <Image 
-                    src="/uploads/ScienceCoverPage.jpg" 
+                    src="/uploads/biomechanics-hero.png" 
                     alt="Research Hero" 
                     fill 
                     className="object-cover opacity-90"
