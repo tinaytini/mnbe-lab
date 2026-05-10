@@ -5,31 +5,31 @@ export default function BiomechanicsPage() {
     return (
         <main className="bg-white pt-24 pb-20">
             {/* Header section with Hero Image */}
-            <section className="relative max-w-7xl mx-auto px-6 lg:px-8 mb-16 h-[400px] rounded-[3rem] overflow-hidden flex items-center justify-center group shadow-2xl">
+            <section className="relative max-w-7xl mx-auto px-6 lg:px-8 mb-16 h-[300px] rounded-[2.5rem] overflow-hidden flex items-center justify-center group shadow-xl">
                 <Image 
                     src="/uploads/ScienceCoverPage.jpg" 
                     alt="Research Hero" 
                     fill 
-                    className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-90"
+                    className="object-cover opacity-90"
                     priority
                 />
                 <div className="absolute inset-0 bg-linear-to-b from-slate-900/60 to-slate-900/40" />
                 <div className="relative z-10 text-center">
-                    <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 bg-white/10 text-white text-sm font-medium mb-6 backdrop-blur-md">
+                    <span className="inline-flex items-center gap-2 px-4 py-1 rounded-full border border-white/20 bg-white/10 text-white text-xs font-medium mb-4 backdrop-blur-md">
                         <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-pulse" />
                         Research Areas
                     </span>
-                    <h1 className="text-4xl sm:text-6xl font-bold text-white tracking-tight mb-4 drop-shadow-lg">
+                    <h1 className="text-3xl sm:text-5xl font-bold text-white tracking-tight mb-3 drop-shadow-lg">
                         Biomechanics
                     </h1>
-                    <p className="text-lg text-slate-200 max-w-2xl mx-auto drop-shadow-md">
+                    <p className="text-base text-slate-200 max-w-xl mx-auto drop-shadow-md">
                         Advanced microfluidic platforms for mechanical analysis of biological systems.
                     </p>
                 </div>
             </section>
 
             {/* Exact Content Sections */}
-            <div className="max-w-5xl mx-auto px-6 lg:px-8 space-y-24">
+            <div className="max-w-5xl mx-auto px-6 lg:px-8 space-y-20">
                 
                 {/* Section 1: Micropillar Screening */}
                 <section>
@@ -37,43 +37,43 @@ export default function BiomechanicsPage() {
                         <div className="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center text-brand-500">
                             <Database className="w-5 h-5" />
                         </div>
-                        <h2 className="text-2xl font-bold text-slate-900 leading-tight">
+                        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
                             Micropillar based high throughput drug screening using C. elegans
                         </h2>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div className="rounded-3xl bg-slate-50 border border-slate-200 aspect-video relative overflow-hidden shadow-xs hover:border-brand-200 transition-all hover:shadow-md group">
+                        <div className="rounded-2xl bg-slate-50 border border-slate-200 aspect-[4/3] relative overflow-hidden shadow-xs hover:border-brand-200 transition-all hover:shadow-md group p-4">
                             <Image 
                                 src="/uploads/High-Throughput-Drug-Screening-1.jpg" 
                                 alt="High Throughput Drug Screening" 
                                 fill 
-                                className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                className="object-contain p-2"
                             />
                         </div>
-                        <div className="rounded-3xl bg-slate-50 border border-slate-200 aspect-video relative overflow-hidden shadow-xs hover:border-brand-200 transition-all hover:shadow-md group">
+                        <div className="rounded-2xl bg-slate-50 border border-slate-200 aspect-[4/3] relative overflow-hidden shadow-xs hover:border-brand-200 transition-all hover:shadow-md group p-4">
                             <Image 
                                 src="/uploads/Diabetes-text-1.jpg" 
                                 alt="High-resolution microscopy" 
                                 fill 
-                                className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                className="object-contain p-2"
                             />
                         </div>
                     </div>
 
-                    <div className="bg-slate-50 rounded-2xl p-8 border border-slate-100 flex gap-4 items-start mb-8">
-                        <div className="w-1.5 h-1.5 rounded-full bg-brand-500 mt-2.5 shrink-0" />
-                        <p className="text-slate-600 text-lg leading-relaxed italic">
+                    <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex gap-4 items-start mb-8">
+                        <div className="w-1.5 h-1.5 rounded-full bg-brand-500 mt-2 shrink-0" />
+                        <p className="text-slate-600 text-base leading-relaxed italic">
                             &quot;The method can be extended to study other muscle impacting disease like ALS, Parkinson disease etc.&quot;
                         </p>
                     </div>
                     
-                    <div className="rounded-3xl bg-slate-50 border border-slate-200 aspect-[21/9] relative overflow-hidden shadow-xs hover:border-brand-200 transition-all hover:shadow-lg group">
+                    <div className="rounded-2xl bg-slate-50 border border-slate-200 aspect-video relative overflow-hidden shadow-xs hover:border-brand-200 transition-all hover:shadow-lg group p-6">
                         <Image 
                             src="/uploads/Neuromuscular-Disease-1.jpg" 
                             alt="Neuromuscular Disease Study" 
                             fill 
-                            className="object-cover group-hover:scale-105 transition-transform duration-1000"
+                            className="object-contain p-4"
                         />
                     </div>
                 </section>
@@ -86,34 +86,34 @@ export default function BiomechanicsPage() {
                         <div className="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center text-brand-500">
                             <Zap className="w-5 h-5" />
                         </div>
-                        <h2 className="text-2xl font-bold text-slate-900 leading-tight">
+                        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
                             Dispensing of single C. elegan worms using microfluidics and pressure boundary condition
                         </h2>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="rounded-3xl bg-slate-50 border border-slate-200 aspect-square relative overflow-hidden shadow-xs hover:border-brand-200 transition-all hover:shadow-md group">
+                        <div className="rounded-2xl bg-slate-50 border border-slate-200 aspect-square relative overflow-hidden shadow-xs hover:border-brand-200 transition-all hover:shadow-md group p-3">
                             <Image 
                                 src="/uploads/Dispensing-1.jpg" 
                                 alt="Microfluidic dispensing system" 
                                 fill 
-                                className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                className="object-contain p-2"
                             />
                         </div>
-                        <div className="rounded-3xl bg-slate-50 border border-slate-200 aspect-square relative overflow-hidden shadow-xs hover:border-brand-200 transition-all hover:shadow-md group">
+                        <div className="rounded-2xl bg-slate-50 border border-slate-200 aspect-square relative overflow-hidden shadow-xs hover:border-brand-200 transition-all hover:shadow-md group p-3">
                             <Image 
                                 src="/uploads/DTIP-1.jpg" 
                                 alt="SEM image of dispensing tip" 
                                 fill 
-                                className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                className="object-contain p-2"
                             />
                         </div>
-                        <div className="rounded-3xl bg-slate-50 border border-slate-200 aspect-square relative overflow-hidden shadow-xs hover:border-brand-200 transition-all hover:shadow-md group">
+                        <div className="rounded-2xl bg-slate-50 border border-slate-200 aspect-square relative overflow-hidden shadow-xs hover:border-brand-200 transition-all hover:shadow-md group p-3">
                             <Image 
                                 src="/uploads/Comsol-dtip-1.jpg" 
                                 alt="Comsol simulation" 
                                 fill 
-                                className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                className="object-contain p-2"
                             />
                         </div>
                     </div>
