@@ -5,7 +5,7 @@ export default function PeopleHero() {
         <section className="relative h-[400px] sm:h-[500px] overflow-hidden mb-20">
             <div className="absolute inset-0 bg-slate-900">
                 <img 
-                    src="/uploads/group-photo.jpg" 
+                    src="/uploads/group-photo.JPG" 
                     alt="MNBE Lab Group Photo" 
                     className="w-full h-full object-cover object-top opacity-60"
                     onError={(e) => {
