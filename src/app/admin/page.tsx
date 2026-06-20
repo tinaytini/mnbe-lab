@@ -40,8 +40,6 @@ const seedResearch: ResearchArea[] = [
     { id: 4, photoUrl: null, title: "Nanoscale Imaging", description: "Sub-ångström characterisation of biological structures." },
 ];
 
-const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD ?? "admin123";
-
 // ─── Small UI helpers ─────────────────────────────────────────────────────────
 
 function Badge({ children, color = "blue" }: { children: React.ReactNode; color?: string }) {
@@ -124,18 +122,29 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const submit = () => {
+    const submit = async () => {
         setLoading(true);
-        setTimeout(() => {
-            if (pw === ADMIN_PASSWORD) {
-                sessionStorage.setItem("mnbe_admin", "1");
+        setError(false);
+
+        try {
+            const response = await fetch("/api/admin/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ password: pw }),
+            });
+
+            if (response.ok) {
                 onLogin();
-            } else {
-                setError(true);
-                setLoading(false);
-                setPw("");
+                return;
             }
-        }, 500);
+
+            setError(true);
+            setPw("");
+            setLoading(false);
+        } catch {
+            setError(true);
+            setLoading(false);
+        }
     };
 
     return (
@@ -173,7 +182,6 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
                         {loading ? "Verifying…" : "Sign In"}
                     </button>
 
-                    <p className="text-center text-xs text-slate-600 mt-4">Hint: admin123</p>
                 </div>
             </div>
         </div>
@@ -1003,7 +1011,7 @@ function OverviewTab({ onNav }: { onNav: (tab: Tab) => void }) {
                 <ul className="flex flex-col gap-2 text-xs text-slate-500">
                     <li className="flex gap-2"><span className="text-blue-400">•</span> Use the tabs above to manage each content section.</li>
                     <li className="flex gap-2"><span className="text-blue-400">•</span> Changes are held in-memory for this session. Connect a database to persist them.</li>
-                    <li className="flex gap-2"><span className="text-blue-400">•</span> The password is set in <code className="bg-white px-1 py-0.5 rounded border border-slate-200">src/app/admin/page.tsx</code> — change <code className="bg-white px-1 py-0.5 rounded border border-slate-200">ADMIN_PASSWORD</code>.</li>
+                    <li className="flex gap-2"><span className="text-blue-400">•</span> Admin access is controlled server-side. Set <code className="bg-white px-1 py-0.5 rounded border border-slate-200">ADMIN_PASSWORD</code> and <code className="bg-white px-1 py-0.5 rounded border border-slate-200">ADMIN_SESSION_TOKEN</code> in production.</li>
                 </ul>
             </div>
         </div>
@@ -1012,7 +1020,7 @@ function OverviewTab({ onNav }: { onNav: (tab: Tab) => void }) {
 
 // ─── Dashboard shell ──────────────────────────────────────────────────────────
 
-function Dashboard({ onLogout }: { onLogout: () => void }) {
+function Dashboard({ onLogout }: { onLogout: () => Promise<void> | void }) {
     const [activeTab, setActiveTab] = useState<Tab>("publications");
 
     return (
@@ -1100,16 +1108,39 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
 // ─── Root ─────────────────────────────────────────────────────────────────────
 
 export default function AdminPage() {
-    const [auth, setAuth] = useState<boolean | null>(() => {
-        if (typeof window !== "undefined") {
-            return sessionStorage.getItem("mnbe_admin") === "1";
-        }
-        return null;
-    });
+    const [auth, setAuth] = useState<boolean | null>(null);
 
-    const logout = () => {
-        sessionStorage.removeItem("mnbe_admin");
-        setAuth(false);
+    useEffect(() => {
+        let cancelled = false;
+
+        const checkSession = async () => {
+            try {
+                const response = await fetch("/api/admin/session", { cache: "no-store" });
+                const data = await response.json();
+
+                if (!cancelled) {
+                    setAuth(Boolean(data.authenticated));
+                }
+            } catch {
+                if (!cancelled) {
+                    setAuth(false);
+                }
+            }
+        };
+
+        checkSession();
+
+        return () => {
+            cancelled = true;
+        };
+    }, []);
+
+    const logout = async () => {
+        try {
+            await fetch("/api/admin/logout", { method: "POST" });
+        } finally {
+            setAuth(false);
+        }
     };
 
     // Avoid hydration mismatch

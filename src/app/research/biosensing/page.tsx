@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Radio, Search, ShieldCheck, Cpu } from "lucide-react";
+import { Radio, ShieldCheck, Cpu } from "lucide-react";
 
 export default function BiosensingPage() {
     return (

@@ -5,17 +5,23 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "./Logo";
 
-const links = [
+type NavLink = {
+    label: string;
+    href: string;
+    submenu?: { label: string; href: string }[];
+};
+
+const links: NavLink[] = [
     { label: "Home", href: "/" },
-    { 
-        label: "Research Areas", 
-        href: "/research",
-        submenu: [
-            { label: "Biomechanics", href: "/research/biomechanics" },
-            { label: "Biosensing", href: "/research/biosensing" },
-            { label: "Bioinspiration", href: "/research/bioinspiration" },
-        ]
-    },
+    // {
+    //     label: "Research Areas",
+    //     href: "/research",
+    //     submenu: [
+    //         { label: "Biomechanics", href: "/research/biomechanics" },
+    //         { label: "Biosensing", href: "/research/biosensing" },
+    //         { label: "Bioinspiration", href: "/research/bioinspiration" },
+    //     ]
+    // },
     { label: "Publications & Achievements", href: "/publications" },
     { label: "People", href: "/people" },
     { label: "Facilities", href: "/facilities" },

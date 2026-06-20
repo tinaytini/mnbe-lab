@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { images } from "@/db/schema";
+import { requireAdminAuth } from "@/lib/admin-auth";
 
 export async function POST(req: NextRequest) {
     try {
+        const unauthorized = requireAdminAuth(req);
+        if (unauthorized) return unauthorized;
+
         const formData = await req.formData();
         const file = formData.get("file") as File | null;
 

@@ -2,9 +2,13 @@ import { db } from "@/db";
 import { groupActivities } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
+import { requireAdminAuth } from "@/lib/admin-auth";
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
+        const unauthorized = requireAdminAuth(req);
+        if (unauthorized) return unauthorized;
+
         const { id } = await params;
         const body = await req.json();
         const [row] = await db.update(groupActivities).set({
@@ -25,6 +29,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
+        const unauthorized = requireAdminAuth(_req);
+        if (unauthorized) return unauthorized;
+
         const { id } = await params;
         await db.delete(groupActivities).where(eq(groupActivities.id, Number(id)));
         return NextResponse.json({ success: true });

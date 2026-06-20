@@ -2,6 +2,7 @@ import { db } from "@/db";
 import { publications } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
+import { requireAdminAuth } from "@/lib/admin-auth";
 
 // PUT /api/publications/[id] — update
 export async function PUT(
@@ -9,6 +10,9 @@ export async function PUT(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const unauthorized = requireAdminAuth(req);
+        if (unauthorized) return unauthorized;
+
         const { id } = await params;
         const body = await req.json();
         const [row] = await db
@@ -37,6 +41,9 @@ export async function DELETE(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const unauthorized = requireAdminAuth(_req);
+        if (unauthorized) return unauthorized;
+
         const { id } = await params;
         await db.delete(publications).where(eq(publications.id, Number(id)));
         return NextResponse.json({ success: true });

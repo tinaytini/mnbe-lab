@@ -2,6 +2,7 @@ import { db } from "@/db";
 import { publications } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
+import { requireAdminAuth } from "@/lib/admin-auth";
 
 // GET /api/publications — list all
 export async function GET() {
@@ -17,6 +18,9 @@ export async function GET() {
 // POST /api/publications — create
 export async function POST(req: NextRequest) {
     try {
+        const unauthorized = requireAdminAuth(req);
+        if (unauthorized) return unauthorized;
+
         const body = await req.json();
         const [row] = await db
             .insert(publications)

@@ -2,9 +2,13 @@ import { db } from "@/db";
 import { news } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
+import { requireAdminAuth } from "@/lib/admin-auth";
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
+        const unauthorized = requireAdminAuth(req);
+        if (unauthorized) return unauthorized;
+
         const { id } = await params;
         const body = await req.json();
         const [row] = await db.update(news).set({ date: body.date, title: body.title, body: body.body, url: body.url || null, photoUrl: body.photoUrl || null }).where(eq(news.id, Number(id))).returning();
@@ -18,6 +22,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
+        const unauthorized = requireAdminAuth(_req);
+        if (unauthorized) return unauthorized;
+
         const { id } = await params;
         await db.delete(news).where(eq(news.id, Number(id)));
         return NextResponse.json({ success: true });
