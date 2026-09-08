@@ -11,18 +11,16 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* Brand palette anchored on #56068c — the logo's own native color
-     (wordmark and mark icon were unified to this single color directly
-     in the SVG source, see public/yaslab.svg) */
+  /* Brand palette anchored on #57068c */
   --color-brand-50: #f9f0fe;
-  --color-brand-100: #f0ddfe;
+  --color-brand-100: #f1ddfe;
   --color-brand-200: #e0b6fc;
   --color-brand-300: #c980fa;
-  --color-brand-400: #af45f7;
-  --color-brand-500: #56068c;
-  --color-brand-600: #480575;
-  --color-brand-700: #360458;
-  --color-brand-800: #270340;
+  --color-brand-400: #b145f7;
+  --color-brand-500: #57068c;
+  --color-brand-600: #490575;
+  --color-brand-700: #370458;
+  --color-brand-800: #280340;
   --color-brand-900: #1b022c;
   --color-brand-950: #0f0118;
 }
