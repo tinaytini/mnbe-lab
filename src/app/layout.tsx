@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavbarWrapper from "../components/NavbarWrapper";
-import Footer from "../components/Footer";
+import FooterWrapper from "../components/FooterWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +32,7 @@ export default function RootLayout({
         <div className="flex-1">
           {children}
         </div>
-        <Footer />
+        <FooterWrapper />
       </body>
     </html>
   );

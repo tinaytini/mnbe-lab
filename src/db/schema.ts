@@ -41,15 +41,20 @@ export const researchAreas = pgTable("research_areas", {
     createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const groupActivities = pgTable("group_activities", {
+export const facilities = pgTable("facilities", {
     id: serial("id").primaryKey(),
     title: varchar("title", { length: 255 }).notNull(),
-    date: varchar("date", { length: 100 }).notNull(),
     description: text("description").notNull(),
-    category: varchar("category", { length: 100 }).notNull(),
-    emoji: varchar("emoji", { length: 10 }).notNull().default("🎉"),
+    specs: varchar("specs", { length: 255 }),
     photoUrl: varchar("photo_url", { length: 512 }),
     createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const adminSessions = pgTable("admin_sessions", {
+    id: serial("id").primaryKey(),
+    token: varchar("token", { length: 128 }).notNull().unique(),
+    createdAt: timestamp("created_at").defaultNow(),
+    expiresAt: timestamp("expires_at").notNull(),
 });
 
 export const images = pgTable("images", {

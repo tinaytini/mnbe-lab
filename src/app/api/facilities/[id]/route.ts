@@ -1,25 +1,29 @@
 import { db } from "@/db";
-import { groupActivities } from "@/db/schema";
+import { facilities } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdminAuth } from "@/lib/admin-auth";
+import { revalidatePath } from "next/cache";
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
-        const unauthorized = requireAdminAuth(req);
+        const unauthorized = await requireAdminAuth(req);
         if (unauthorized) return unauthorized;
 
         const { id } = await params;
         const body = await req.json();
-        const [row] = await db.update(groupActivities).set({
-            title: body.title,
-            date: body.date,
-            description: body.description,
-            category: body.category,
-            emoji: body.emoji,
-            ...(body.photoUrl !== undefined && { photoUrl: body.photoUrl }),
-        }).where(eq(groupActivities.id, Number(id))).returning();
+        const [row] = await db
+            .update(facilities)
+            .set({
+                title: body.title,
+                description: body.description,
+                specs: body.specs || null,
+                ...(body.photoUrl !== undefined && { photoUrl: body.photoUrl }),
+            })
+            .where(eq(facilities.id, Number(id)))
+            .returning();
         if (!row) return NextResponse.json({ error: "Not found" }, { status: 404 });
+        revalidatePath("/facilities");
         return NextResponse.json(row);
     } catch (err) {
         console.error(err);
@@ -29,11 +33,12 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
-        const unauthorized = requireAdminAuth(_req);
+        const unauthorized = await requireAdminAuth(_req);
         if (unauthorized) return unauthorized;
 
         const { id } = await params;
-        await db.delete(groupActivities).where(eq(groupActivities.id, Number(id)));
+        await db.delete(facilities).where(eq(facilities.id, Number(id)));
+        revalidatePath("/facilities");
         return NextResponse.json({ success: true });
     } catch (err) {
         console.error(err);

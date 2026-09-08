@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { Leaf, Wind, Droplets, Target } from "lucide-react";
+
+export const metadata: Metadata = {
+    title: "Bioinspiration | YAS Lab",
+    description: "How the YAS Lab draws on nature's design strategies to solve engineering challenges in bioengineering and materials science.",
+};
 
 export default function BioinspirationPage() {
     return (
@@ -22,7 +28,7 @@ export default function BioinspirationPage() {
                         Bioinspiration
                     </h1>
                     <p className="text-xl text-slate-200 max-w-2xl mx-auto leading-relaxed font-light">
-                        Learning from 3.8 billion years of nature's R&D to solve complex engineering challenges.
+                        Learning from 3.8 billion years of nature&apos;s R&D to solve complex engineering challenges.
                     </p>
                 </div>
             </section>
@@ -43,7 +49,7 @@ export default function BioinspirationPage() {
                         <div className="bg-emerald-50 rounded-3xl p-8 flex flex-col justify-center border border-emerald-100">
                             <Leaf className="w-10 h-10 text-emerald-600 mb-4" />
                             <h3 className="text-xl font-bold text-slate-900 mb-2">Philosophy</h3>
-                            <p className="text-sm text-slate-500 italic">"The more our world functions like the natural world, the more likely we are to endure on this home that is ours, but not only ours."</p>
+                            <p className="text-sm text-slate-500 italic">&quot;The more our world functions like the natural world, the more likely we are to endure on this home that is ours, but not only ours.&quot;</p>
                         </div>
                     </div>
                 </div>

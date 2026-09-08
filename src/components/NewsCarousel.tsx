@@ -18,8 +18,8 @@ export default function NewsCarousel({ items }: { items: NewsItemData[] }) {
     const itemsPerSlide = 3;
     const numSlides = Math.ceil(items.length / itemsPerSlide) || 1;
 
-    // Since user asked for "3 sliders with 3 news each", we cap at 3 slides (9 items)
-    const maxSlides = Math.min(numSlides, 3);
+    // Cap at 2 slides (6 items)
+    const maxSlides = Math.min(numSlides, 2);
 
     const nextSlide = () => {
         setCurrentSlide((prev) => (prev + 1) % maxSlides);

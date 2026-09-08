@@ -1,21 +1,20 @@
 import { db } from "@/db";
-import { publications } from "@/db/schema";
-import { desc, eq } from "drizzle-orm";
+import { facilities } from "@/db/schema";
 import { NextRequest, NextResponse } from "next/server";
+import { desc } from "drizzle-orm";
 import { requireAdminAuth } from "@/lib/admin-auth";
+import { revalidatePath } from "next/cache";
 
-// GET /api/publications — list all
 export async function GET() {
     try {
-        const rows = await db.select().from(publications).orderBy(desc(publications.createdAt));
+        const rows = await db.select().from(facilities).orderBy(desc(facilities.createdAt));
         return NextResponse.json(rows);
     } catch (err) {
         console.error(err);
-        return NextResponse.json({ error: "Failed to fetch publications" }, { status: 500 });
+        return NextResponse.json({ error: "Failed to fetch facilities" }, { status: 500 });
     }
 }
 
-// POST /api/publications — create
 export async function POST(req: NextRequest) {
     try {
         const unauthorized = await requireAdminAuth(req);
@@ -23,19 +22,18 @@ export async function POST(req: NextRequest) {
 
         const body = await req.json();
         const [row] = await db
-            .insert(publications)
+            .insert(facilities)
             .values({
-                year: body.year,
                 title: body.title,
-                authors: body.authors,
-                journal: body.journal,
-                url: body.url || null,
-                description: body.description || null,
+                description: body.description,
+                specs: body.specs || null,
+                photoUrl: body.photoUrl ?? null,
             })
             .returning();
+        revalidatePath("/facilities");
         return NextResponse.json(row, { status: 201 });
     } catch (err) {
         console.error(err);
-        return NextResponse.json({ error: "Failed to create publication" }, { status: 500 });
+        return NextResponse.json({ error: "Failed to create facility" }, { status: 500 });
     }
 }

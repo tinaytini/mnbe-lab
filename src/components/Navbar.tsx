@@ -71,7 +71,7 @@ export default function Navbar() {
                                     <div className="relative">
                                         <Link
                                             href={link.href}
-                                            className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1 ${solid
+                                            className={`relative px-4 py-2 rounded-lg text-base font-medium transition-all duration-200 flex items-center gap-1 ${solid
                                                 ? active
                                                     ? "text-brand-500 bg-brand-50"
                                                     : "text-slate-600 hover:text-brand-500 hover:bg-brand-50"
@@ -103,7 +103,7 @@ export default function Navbar() {
                                 ) : (
                                     <Link
                                         href={link.href}
-                                        className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${solid
+                                        className={`relative px-4 py-2 rounded-lg text-base font-medium transition-all duration-200 ${solid
                                             ? active
                                                 ? "text-brand-500 bg-brand-50"
                                                 : "text-slate-600 hover:text-brand-500 hover:bg-brand-50"
@@ -163,7 +163,7 @@ export default function Navbar() {
                                 <Link
                                     href={link.href}
                                     onClick={() => setMenuOpen(false)}
-                                    className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${active
+                                    className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors ${active
                                         ? "text-brand-500 bg-brand-50"
                                         : "text-slate-600 hover:text-brand-500 hover:bg-brand-50"
                                         }`}

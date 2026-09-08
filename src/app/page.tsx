@@ -1,25 +1,20 @@
 import Link from "next/link";
-import { Activity, Bug, Leaf } from "lucide-react";
+import { Activity, Bug, Leaf, FlaskConical } from "lucide-react";
 import { db } from "@/db";
-import { publications as pubsTable, news as newsTable } from "@/db/schema";
-import { desc } from "drizzle-orm";
+import { publications as pubsTable, news as newsTable, members as membersTable, researchAreas as researchAreasTable } from "@/db/schema";
+import { asc, count, desc } from "drizzle-orm";
 import NewsCarousel from "@/components/NewsCarousel";
 
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
-const stats = [
-  { value: "40+", label: "Publications" },
-  { value: "12", label: "Active Projects" },
-  { value: "8", label: "Research Areas" },
-  { value: "25+", label: "Team Members" },
-];
-
-const researchAreas = [
-  { icon: <Activity strokeWidth={1.5} className="w-7 h-7 text-brand-500" />, title: "Biosensing", desc: "Samples containing RNA and DNA lie at the heart of all biopsy techniques. We are determined to develop biosensors that can enhance the concentration of RNA and DNA in these samples, improving the detection sensitivity." },
-  { icon: <Bug strokeWidth={1.5} className="w-7 h-7 text-brand-500" />, title: "Biomechanics", desc: "Caenorhabditis elegans (C. elegans) worms are extensively used as model organisms in medicinal and genetic research. We use biomechanical techniques to model neuromuscular diseases like diabetes, alzheimer, etc using C. elegans." },
-  { icon: <Leaf strokeWidth={1.5} className="w-7 h-7 text-brand-500" />, title: "Bioinspiration", desc: "Being bioinspired from amazing design strategies of Nature at micro and nano level, we are determined to solve incumbent problems in bioengineering using micro and nano fabrication techniques." },
-];
+// Known research areas get a distinct icon; anything added later falls back to a generic one.
+const areaIcons: Record<string, React.ReactNode> = {
+  Biosensing: <Activity strokeWidth={1.5} className="w-7 h-7 text-brand-500" />,
+  Biomechanics: <Bug strokeWidth={1.5} className="w-7 h-7 text-brand-500" />,
+  Bioinspiration: <Leaf strokeWidth={1.5} className="w-7 h-7 text-brand-500" />,
+};
+const defaultAreaIcon = <FlaskConical strokeWidth={1.5} className="w-7 h-7 text-brand-500" />;
 
 
 
@@ -72,7 +67,14 @@ export const revalidate = 60;
 export default async function Home() {
   let recentPubs: { id: number; year: string; title: string; authors: string; journal: string; url?: string | null }[] = [];
   let recentNews: { id: number; date: string; title: string; body: string; url?: string | null; photoUrl?: string | null }[] = [];
+  let statCounts = { publications: 0, news: 0, research: 0, members: 0 };
+  let missionAreas: { id: number; title: string; description: string; photoUrl: string | null }[] = [];
   try {
+    missionAreas = await db
+      .select({ id: researchAreasTable.id, title: researchAreasTable.title, description: researchAreasTable.description, photoUrl: researchAreasTable.photoUrl })
+      .from(researchAreasTable)
+      .orderBy(asc(researchAreasTable.createdAt))
+      .limit(3);
     recentPubs = await db
       .select({ id: pubsTable.id, year: pubsTable.year, title: pubsTable.title, authors: pubsTable.authors, journal: pubsTable.journal, url: pubsTable.url })
       .from(pubsTable)
@@ -83,6 +85,18 @@ export default async function Home() {
       .from(newsTable)
       .orderBy(desc(newsTable.createdAt))
       .limit(9);
+    const [[pubCount], [newsCount], [researchCount], [memberCount]] = await Promise.all([
+      db.select({ value: count() }).from(pubsTable),
+      db.select({ value: count() }).from(newsTable),
+      db.select({ value: count() }).from(researchAreasTable),
+      db.select({ value: count() }).from(membersTable),
+    ]);
+    statCounts = {
+      publications: pubCount?.value ?? 0,
+      news: newsCount?.value ?? 0,
+      research: researchCount?.value ?? 0,
+      members: memberCount?.value ?? 0,
+    };
   } catch {
     // DB unavailable — show empty state
   }
@@ -127,7 +141,7 @@ export default async function Home() {
 
             {/* Left Column: Text & CTA */}
             <div className="text-left py-12 lg:py-0">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-300/30 bg-brand-500/10 text-brand-200 text-sm font-medium mb-8 backdrop-blur-sm">
+              <div className="hidden sm:inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-300/30 bg-brand-500/10 text-brand-200 text-sm font-medium mb-8 backdrop-blur-sm">
                 <span className="w-1.5 h-1.5 rounded-full bg-brand-300 animate-pulse" />
                 Advancing Nanoscale Biosystems Engineering
               </div>
@@ -144,32 +158,29 @@ export default async function Home() {
                 Our research aims to understand the concepts and mechanisms of complex bioscience challenges lying at the interface of biology, physics, and engineering. We investigate biological processes at the micro- and nanoscale.
               </p>
 
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <Link
-                  href="/research"
-                  className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-linear-to-r from-brand-500 to-brand-400 text-white font-semibold text-sm shadow-xl shadow-brand-500/25 hover:shadow-brand-500/40 hover:-translate-y-0.5 transition-all duration-200 w-full sm:w-auto"
-                >
-                  Explore Research
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 group-hover:translate-x-0.5 transition-transform">
-                    <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
-                  </svg>
-                </Link>
-                <Link
-                  href="/publications"
-                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full border border-white/20 text-white/80 font-semibold text-sm hover:bg-white/10 hover:text-white transition-all duration-200 backdrop-blur-sm w-full sm:w-auto"
-                >
-                  View Publications
-                </Link>
-              </div>
+              <Link
+                href="/publications"
+                className="lg:hidden inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-linear-to-r from-brand-500 to-brand-400 text-white font-semibold text-sm shadow-xl shadow-brand-500/25 hover:shadow-brand-500/40 hover:-translate-y-0.5 transition-all duration-200 w-full sm:w-auto"
+              >
+                View Publications
+              </Link>
             </div>
 
             {/* Right Column: Visual Showcase */}
             <div className="relative hidden lg:flex items-center justify-center p-8">
-              <img
-                src="/uploads/mnbe-lab.png"
-                alt="MNBE Lab Logo"
-                className="w-full max-w-sm xl:max-w-md h-auto object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
-              />
+              <div className="flex flex-col items-end gap-4 w-full max-w-sm xl:max-w-md">
+                <img
+                  src="/uploads/mnbe-lab.png"
+                  alt="MNBE Lab Logo"
+                  className="w-full h-auto object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
+                />
+                <Link
+                  href="/publications"
+                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-linear-to-r from-brand-500 to-brand-400 text-white font-semibold text-sm shadow-xl shadow-brand-500/25 hover:shadow-brand-500/40 hover:-translate-y-0.5 transition-all duration-200 whitespace-nowrap"
+                >
+                  View Publications
+                </Link>
+              </div>
             </div>
 
           </div>
@@ -224,30 +235,40 @@ export default async function Home() {
             </div>
 
             {/* Right – area cards */}
-            <div className="flex flex-col gap-5">
-              {researchAreas.map((area, idx) => (
-                <div
-                  key={area.title}
-                  className="group relative overflow-hidden bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-200 transition-all duration-300"
-                >
-                  {/* Subtle hover gradient background */}
-                  <div className="absolute inset-0 bg-linear-to-r from-brand-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+            <div className="flex flex-col gap-3 sm:gap-5">
+              {missionAreas.length === 0 ? (
+                <div className="text-center py-10 text-slate-400 text-sm">
+                  No research areas yet. <Link href="/admin" className="text-brand-500 underline">Add via admin →</Link>
+                </div>
+              ) : (
+                missionAreas.map((area) => (
+                  <div
+                    key={area.id}
+                    className="group relative overflow-hidden bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-200 transition-all duration-300"
+                  >
+                    {/* Subtle hover gradient background */}
+                    <div className="absolute inset-0 bg-linear-to-r from-brand-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-                  <div className="relative z-10 flex gap-5 items-start">
-                    <div className="shrink-0 w-14 h-14 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-3xl group-hover:bg-white group-hover:border-brand-100 group-hover:shadow-sm transition-all duration-300 group-hover:-translate-y-1">
-                      {area.icon}
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-base font-semibold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">
-                        {area.title}
-                      </h3>
-                      <p className="text-sm text-slate-500 leading-relaxed">
-                        {area.desc}
-                      </p>
+                    <div className="relative z-10 flex gap-4 sm:gap-5 items-center sm:items-start">
+                      <div className="shrink-0 w-11 h-11 sm:w-14 sm:h-14 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden text-2xl sm:text-3xl group-hover:bg-white group-hover:border-brand-100 group-hover:shadow-sm transition-all duration-300 group-hover:-translate-y-1">
+                        {area.photoUrl ? (
+                          <img src={area.photoUrl} alt={area.title} className="w-full h-full object-cover" />
+                        ) : (
+                          areaIcons[area.title] ?? defaultAreaIcon
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-base font-semibold text-slate-900 mb-0 sm:mb-2 group-hover:text-brand-600 transition-colors">
+                          {area.title}
+                        </h3>
+                        <p className="hidden sm:block text-sm text-slate-500 leading-relaxed">
+                          {area.description}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         </div>
@@ -270,7 +291,7 @@ export default async function Home() {
                 No publications yet. <Link href="/admin" className="text-brand-500 underline">Add via admin →</Link>
               </div>
             ) : (
-              recentPubs.map((pub) => {
+              recentPubs.map((pub, idx) => {
                 const isExternal = !!pub.url;
                 const Wrapper = isExternal ? 'a' : Link;
                 const props = isExternal
@@ -281,7 +302,8 @@ export default async function Home() {
                   <Wrapper
                     key={pub.id}
                     {...props}
-                    className="group flex gap-5 p-6 rounded-2xl border border-slate-200 bg-white hover:border-brand-100 hover:shadow-md transition-all duration-200"
+                    className={`group flex gap-5 p-6 rounded-2xl border border-slate-200 bg-white hover:border-brand-100 hover:shadow-md transition-all duration-200 ${idx >= 2 ? "hidden sm:flex" : ""
+                      }`}
                   >
                     {/* Year badge */}
                     <div className="shrink-0 w-12 h-12 rounded-xl bg-brand-50 flex items-center justify-center text-brand-500 font-bold text-sm">
@@ -376,10 +398,10 @@ export default async function Home() {
           {/* Quick Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-12 border-t border-b border-slate-100 py-10">
             {[
-              { label: "Publications", value: "40+" },
-              { label: "Active Projects", value: "12" },
-              { label: "Research Areas", value: "8" },
-              { label: "Team Members", value: "25+" },
+              { label: "Publications", value: `${statCounts.publications}` },
+              { label: "Research Areas", value: `${statCounts.research}` },
+              { label: "Team Members", value: `${statCounts.members}` },
+              { label: "News & Updates", value: `${statCounts.news}` },
             ].map((s) => (
               <div key={s.label} className="flex flex-col items-around">
                 <span className="text-3xl sm:text-4xl font-extrabold bg-linear-to-r from-brand-500 to-brand-400 bg-clip-text text-transparent mb-1">

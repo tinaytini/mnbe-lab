@@ -1,57 +1,19 @@
+import type { Metadata } from "next";
 import Image from "next/image";
+import { db } from "@/db";
+import { facilities } from "@/db/schema";
+import { desc } from "drizzle-orm";
 
-const facilities = [
-    {
-        title: "Mask Writer",
-        description: "The Heidelberg DWL 66+ is a high-resolution direct write laser lithography system used for photomask making, maskless lithography, and direct writing applications. It enables the creation of complex micro-scale features with extreme precision.",
-        image: "/uploads/facilities/mask-writer.png",
-        specs: "High Resolution Laser System"
-    },
-    {
-        title: "Mask Aligner",
-        description: "Precision alignment system for UV lithography processes, essential for multi-layer microfabrication and semiconductor research.",
-        image: "/uploads/facilities/mask-aligner.png",
-        specs: "Sub-micron Alignment"
-    },
-    {
-        title: "Nanoscribe 3D Printer",
-        description: "State-of-the-art Two-Photon Polymerization (2PP) system for 3D microprinting. Capable of creating intricate structures at the nano and microscale for bio-scaffolds and micro-optics.",
-        image: "/uploads/facilities/nanoscribe.png",
-        specs: "Two-Photon Polymerization"
-    },
-    {
-        title: "Bioprinter",
-        description: "Advanced biofabrication system for printing 3D tissue-like structures and biocompatible materials. Used in our tissue engineering and regenerative medicine research.",
-        image: "/uploads/facilities/bioprinter.jpg",
-        specs: "Multi-material Printing"
-    },
-    {
-        title: "Cell Imaging Microscope",
-        description: "High-performance fluorescence imaging system for real-time monitoring of cellular responses and molecular interactions within our lab-on-a-chip devices.",
-        image: "/uploads/facilities/cell-imaging-microscope.png",
-        specs: "Confocal Fluorescence"
-    },
-    {
-        title: "Reactive Ion Etcher (RIE)",
-        description: "Dry etching system for high-precision removal of materials at the nanoscale. Essential for silicon and glass-based microfluidic device fabrication.",
-        image: "/uploads/facilities/rie.jpg",
-        specs: "Plasma Etching"
-    },
-    {
-        title: "Surface Profiler",
-        description: "High-resolution metrology tool for measuring surface topography, step heights, and roughness of fabricated microstructures.",
-        image: "/uploads/facilities/surface-profiler.jpg",
-        specs: "Nanoscale Metrology"
-    },
-    {
-        title: "e-Beam Deposition",
-        description: "Physical Vapor Deposition (PVD) system for depositing high-purity thin films of metals and dielectrics for electronic and optical applications.",
-        image: "/uploads/facilities/ebeam-deposition.jpg",
-        specs: "Thin Film Deposition"
-    }
-];
+export const metadata: Metadata = {
+    title: "Facilities | YAS Lab",
+    description: "Explore the state-of-the-art micro/nanofabrication, biosensing, and cellular characterization equipment at the YAS Lab, NYU Abu Dhabi.",
+};
 
-export default function FacilitiesPage() {
+export const revalidate = 60;
+
+export default async function FacilitiesPage() {
+    const items = await db.select().from(facilities).orderBy(desc(facilities.createdAt));
+
     return (
         <main className="bg-slate-50 pt-24 pb-24">
             {/* Header */}
@@ -68,35 +30,48 @@ export default function FacilitiesPage() {
 
             {/* Equipment Grid */}
             <section className="max-w-7xl mx-auto px-6 lg:px-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-                    {facilities.map((item, idx) => (
-                        <div 
-                            key={idx} 
-                            className="group bg-white rounded-[2rem] border border-slate-200 overflow-hidden shadow-xs hover:shadow-xl hover:border-brand-200 transition-all duration-500"
-                        >
-                            <div className="aspect-[4/3] relative bg-slate-100 overflow-hidden">
-                                <Image
-                                    src={item.image}
-                                    alt={item.title}
-                                    fill
-                                    className="object-cover group-hover:scale-110 transition-transform duration-700"
-                                />
-                                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                <div className="absolute bottom-4 left-6 right-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                                    <span className="text-[11px] font-bold text-white uppercase tracking-[0.2em]">{item.specs}</span>
+                {items.length === 0 ? (
+                    <div className="text-center py-16 text-slate-400">
+                        <p className="text-4xl mb-3">🔬</p>
+                        <p className="text-sm">No facilities yet. Add them via the <a href="/admin" className="text-brand-500 underline">admin panel</a>.</p>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+                        {items.map((item) => (
+                            <div
+                                key={item.id}
+                                className="group bg-white rounded-[2rem] border border-slate-200 overflow-hidden shadow-xs hover:shadow-xl hover:border-brand-200 transition-all duration-500"
+                            >
+                                <div className="aspect-[4/3] relative bg-slate-100 overflow-hidden">
+                                    {item.photoUrl ? (
+                                        <Image
+                                            src={item.photoUrl}
+                                            alt={item.title}
+                                            fill
+                                            className="object-cover group-hover:scale-110 transition-transform duration-700"
+                                        />
+                                    ) : (
+                                        <div className="absolute inset-0 flex items-center justify-center text-4xl text-slate-300">🔬</div>
+                                    )}
+                                    <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                    {item.specs && (
+                                        <div className="absolute bottom-4 left-6 right-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                                            <span className="text-[11px] font-bold text-white uppercase tracking-[0.2em]">{item.specs}</span>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="p-8">
+                                    <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-brand-600 transition-colors">
+                                        {item.title}
+                                    </h3>
+                                    <p className="text-slate-500 text-sm leading-relaxed line-clamp-3 group-hover:line-clamp-none transition-all duration-300">
+                                        {item.description}
+                                    </p>
                                 </div>
                             </div>
-                            <div className="p-8">
-                                <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-brand-600 transition-colors">
-                                    {item.title}
-                                </h3>
-                                <p className="text-slate-500 text-sm leading-relaxed line-clamp-3 group-hover:line-clamp-none transition-all duration-300">
-                                    {item.description}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                )}
             </section>
         </main>
     );

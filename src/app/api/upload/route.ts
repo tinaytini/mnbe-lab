@@ -5,7 +5,7 @@ import { requireAdminAuth } from "@/lib/admin-auth";
 
 export async function POST(req: NextRequest) {
     try {
-        const unauthorized = requireAdminAuth(req);
+        const unauthorized = await requireAdminAuth(req);
         if (unauthorized) return unauthorized;
 
         const formData = await req.formData();

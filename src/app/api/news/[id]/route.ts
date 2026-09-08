@@ -3,16 +3,19 @@ import { news } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdminAuth } from "@/lib/admin-auth";
+import { revalidatePath } from "next/cache";
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
-        const unauthorized = requireAdminAuth(req);
+        const unauthorized = await requireAdminAuth(req);
         if (unauthorized) return unauthorized;
 
         const { id } = await params;
         const body = await req.json();
         const [row] = await db.update(news).set({ date: body.date, title: body.title, body: body.body, url: body.url || null, photoUrl: body.photoUrl || null }).where(eq(news.id, Number(id))).returning();
         if (!row) return NextResponse.json({ error: "Not found" }, { status: 404 });
+        revalidatePath("/");
+        revalidatePath("/news");
         return NextResponse.json(row);
     } catch (err) {
         console.error(err);
@@ -22,11 +25,13 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
-        const unauthorized = requireAdminAuth(_req);
+        const unauthorized = await requireAdminAuth(_req);
         if (unauthorized) return unauthorized;
 
         const { id } = await params;
         await db.delete(news).where(eq(news.id, Number(id)));
+        revalidatePath("/");
+        revalidatePath("/news");
         return NextResponse.json({ success: true });
     } catch (err) {
         console.error(err);

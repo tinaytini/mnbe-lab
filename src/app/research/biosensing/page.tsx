@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { Radio, ShieldCheck, Cpu } from "lucide-react";
+
+export const metadata: Metadata = {
+    title: "Biosensing | YAS Lab",
+    description: "The YAS Lab's biosensing research developing biosensors to enhance RNA and DNA detection sensitivity for biopsy techniques.",
+};
 
 export default function BiosensingPage() {
     return (

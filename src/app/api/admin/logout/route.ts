@@ -1,7 +1,9 @@
-import { NextResponse } from "next/server";
-import { ADMIN_COOKIE_NAME } from "@/lib/admin-auth";
+import { NextRequest, NextResponse } from "next/server";
+import { ADMIN_COOKIE_NAME, revokeAdminSession } from "@/lib/admin-auth";
 
-export async function POST() {
+export async function POST(req: NextRequest) {
+    await revokeAdminSession(req.cookies.get(ADMIN_COOKIE_NAME)?.value);
+
     const response = NextResponse.json({ authenticated: false });
     response.cookies.set({
         name: ADMIN_COOKIE_NAME,

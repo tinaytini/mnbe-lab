@@ -39,9 +39,12 @@ export default function Footer() {
                     </nav>
 
                     {/* Partner / University branding */}
-                    <div className="flex flex-col items-center lg:items-end gap-2 text-brand-200">
-                        <span className="text-sm font-medium text-white">NYU Abu Dhabi</span>
-                        <span className="text-xs text-brand-300">Division of Engineering</span>
+                    <div className="flex items-center lg:items-end">
+                        <img
+                            src="/images/nyuad-logo-white.png"
+                            alt="NYU Abu Dhabi"
+                            className="h-12 w-auto"
+                        />
                     </div>
                 </div>
             </div>
@@ -59,7 +62,7 @@ export default function Footer() {
                 {/* Social icons */}
                 <div className="flex items-center gap-4">
                     {/* Email */}
-                    <a href="mailto:contact@mnbelab.org" aria-label="Email" className="text-brand-300 hover:text-white transition-colors">
+                    <a href="mailto:rafael.song@nyu.edu" aria-label="Email" className="text-brand-300 hover:text-white transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
                             <rect x="2" y="4" width="20" height="16" rx="2" />
                             <path d="m22 7-8.97 5.7a1.94 1.94 0 01-2.06 0L2 7" />

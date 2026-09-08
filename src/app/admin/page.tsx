@@ -9,36 +9,7 @@ type Publication = { id: number; year: string; title: string; authors: string; j
 type NewsItem = { id: number; date: string; title: string; body: string; url?: string | null; photoUrl?: string | null };
 type Member = { id: number; name: string; role: string; focus: string; email?: string | null; originCountry?: string | null; biography?: string | null; photoUrl?: string | null };
 type ResearchArea = { id: number; photoUrl: string | null; title: string; description: string };
-type Activity = { id: number; title: string; date: string; description: string; category: string; emoji: string; photoUrl?: string | null };
-
-// ─── Seed data ────────────────────────────────────────────────────────────────
-
-const seedPublications: Publication[] = [
-    { id: 1, year: "2024", title: "Self-assembling DNA nanostructures for targeted oncology therapy", authors: "Rahman A., Chen L., Patel R., et al.", journal: "Nature Nanotechnology" },
-    { id: 2, year: "2024", title: "High-throughput microfluidic screening of nanocarrier formulations", authors: "Müller S., Rahman A., Kim J., et al.", journal: "ACS Nano" },
-    { id: 3, year: "2023", title: "Biocomputable logic gates via synthetic DNA circuits", authors: "Patel R., Chen L., Rahman A.", journal: "Science Advances" },
-    { id: 4, year: "2023", title: "Green synthesis routes for biocompatible gold nanoparticles", authors: "Kim J., Müller S., et al.", journal: "Nano Letters" },
-];
-
-const seedNews: NewsItem[] = [
-    { id: 1, date: "February 2026", title: "Prof. Rahman delivers keynote at NanoBio World Congress", body: "Prof. Rahman was invited to present the lab's latest results on DNA nanostructure drug delivery." },
-    { id: 2, date: "October 2024", title: "Best Paper Award at IEEE NanoBio 2024 — Tokyo", body: "Our submission on self-assembling nanocarriers received the Best Paper Award." },
-    { id: 3, date: "July 2024", title: "ERC Starting Grant awarded — €1.5M for Molecular Machines", body: "The European Research Council awarded the lab a prestigious Starting Grant." },
-];
-
-const seedMembers: Member[] = [
-    { id: 1, name: "Prof. Ahmed Rahman", role: "Principal Investigator", focus: "Molecular Nanotechnology & Lab Director" },
-    { id: 2, name: "Dr. Lei Chen", role: "Senior Researcher", focus: "DNA Nanostructures & Biocomputation" },
-    { id: 3, name: "Dr. Ravi Patel", role: "Postdoctoral Fellow", focus: "Biosystems Engineering" },
-    { id: 4, name: "Sophie Müller", role: "PhD Candidate", focus: "Drug Delivery Nanocarriers" },
-];
-
-const seedResearch: ResearchArea[] = [
-    { id: 1, photoUrl: null, title: "Molecular Nanotechnology", description: "Engineering functional nanostructures at the molecular scale." },
-    { id: 2, photoUrl: null, title: "Biosystems Engineering", description: "Designing synthetic biological systems and circuits." },
-    { id: 3, photoUrl: null, title: "Drug Delivery Systems", description: "Nanocarrier platforms for precision medicine." },
-    { id: 4, photoUrl: null, title: "Nanoscale Imaging", description: "Sub-ångström characterisation of biological structures." },
-];
+type Facility = { id: number; title: string; description: string; specs?: string | null; photoUrl?: string | null };
 
 // ─── Small UI helpers ─────────────────────────────────────────────────────────
 
@@ -190,15 +161,15 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
 
 // ─── Tab definitions ──────────────────────────────────────────────────────────
 
-type Tab = "overview" | "publications" | "news" | "people" | "research" | "activities";
+type Tab = "overview" | "publications" | "news" | "people" | "research" | "facilities";
 
 const tabs: { id: Tab; label: string; icon: string }[] = [
     { id: "overview", label: "Overview", icon: "📊" },
     { id: "publications", label: "Publications", icon: "📄" },
-    { id: "news", label: "Announcements", icon: "📰" },
+    { id: "news", label: "News", icon: "📰" },
     { id: "people", label: "People", icon: "👥" },
     { id: "research", label: "Research Areas", icon: "🔬" },
-    { id: "activities", label: "News", icon: "🎉" },
+    { id: "facilities", label: "Facilities", icon: "🔧" },
 ];
 
 // ─── Publications Tab ─────────────────────────────────────────────────────────
@@ -401,7 +372,7 @@ function NewsTab() {
     return (
         <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-slate-800">Announcements <Badge color="amber">{items.length}</Badge></h2>
+                <h2 className="text-lg font-semibold text-slate-800">News <Badge color="amber">{items.length}</Badge></h2>
                 <div className="flex gap-2">
                     <Btn variant="secondary" size="sm" onClick={load}>↻ Refresh</Btn>
                     {!showForm && <Btn onClick={() => { setAdding(true); setEditing(null); }}>+ Add Announcement</Btn>}
@@ -786,24 +757,22 @@ function ResearchTab() {
     );
 }
 
-// ─── Activities Tab ───────────────────────────────────────────────────────────
+// ─── Facilities Tab ───────────────────────────────────────────────────────────
 
-const categoryOptions = ["Lab Meetings", "Outreach & Events", "Social & Wellbeing", "Conferences & Travel"];
-
-function ActivitiesTab() {
-    const [items, setItems] = useState<Activity[]>([]);
+function FacilitiesTab() {
+    const [items, setItems] = useState<Facility[]>([]);
     const [loading, setLoading] = useState(true);
-    const [editing, setEditing] = useState<Activity | null>(null);
+    const [editing, setEditing] = useState<Facility | null>(null);
     const [adding, setAdding] = useState(false);
     const [saving, setSaving] = useState(false);
     const [uploading, setUploading] = useState(false);
-    const blank: Omit<Activity, "id"> = { title: "", date: "", description: "", category: "Lab Meetings", emoji: "🎉", photoUrl: null };
-    const [form, setForm] = useState<Omit<Activity, "id">>(blank);
+    const blank: Omit<Facility, "id"> = { title: "", description: "", specs: "", photoUrl: null };
+    const [form, setForm] = useState<Omit<Facility, "id">>(blank);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const load = async () => {
         setLoading(true);
-        try { setItems(await (await fetch("/api/activities")).json()); }
+        try { setItems(await (await fetch("/api/facilities")).json()); }
         catch { /* ignore */ }
         finally { setLoading(false); }
     };
@@ -828,12 +797,12 @@ function ActivitiesTab() {
         setSaving(true);
         try {
             if (editing) {
-                const res = await fetch(`/api/activities/${editing.id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+                const res = await fetch(`/api/facilities/${editing.id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
                 const updated = await res.json();
-                setItems((prev) => prev.map((a) => (a.id === editing.id ? updated : a)));
+                setItems((prev) => prev.map((f) => (f.id === editing.id ? updated : f)));
                 setEditing(null);
             } else {
-                const res = await fetch("/api/activities", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+                const res = await fetch("/api/facilities", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
                 const created = await res.json();
                 setItems((prev) => [created, ...prev]);
                 setAdding(false);
@@ -844,80 +813,51 @@ function ActivitiesTab() {
     };
 
     const del = async (id: number) => {
-        if (!confirm("Delete this news item?")) return;
-        await fetch(`/api/activities/${id}`, { method: "DELETE" });
-        setItems((prev) => prev.filter((a) => a.id !== id));
+        if (!confirm("Delete this facility?")) return;
+        await fetch(`/api/facilities/${id}`, { method: "DELETE" });
+        setItems((prev) => prev.filter((f) => f.id !== id));
     };
 
-    const edit = (a: Activity) => { setEditing(a); setAdding(false); setForm({ title: a.title, date: a.date, description: a.description, category: a.category, emoji: a.emoji, photoUrl: a.photoUrl }); };
+    const edit = (f: Facility) => { setEditing(f); setAdding(false); setForm({ title: f.title, description: f.description, specs: f.specs || "", photoUrl: f.photoUrl || null }); };
     const cancel = () => { setEditing(null); setAdding(false); setForm(blank); };
     const showForm = editing !== null || adding;
-
-    const catColor: Record<string, string> = {
-        "Lab Meetings": "blue", "Outreach & Events": "green",
-        "Social & Wellbeing": "purple", "Conferences & Travel": "amber",
-    };
 
     return (
         <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-slate-800">News <Badge color="amber">{items.length}</Badge></h2>
+                <h2 className="text-lg font-semibold text-slate-800">Facilities <Badge color="blue">{items.length}</Badge></h2>
                 <div className="flex gap-2">
                     <Btn variant="secondary" size="sm" onClick={load}>↻ Refresh</Btn>
-                    {!showForm && <Btn onClick={() => { setAdding(true); setEditing(null); }}>+ Add News Item</Btn>}
+                    {!showForm && <Btn onClick={() => { setAdding(true); setEditing(null); }}>+ Add Facility</Btn>}
                 </div>
             </div>
 
             {showForm && (
-                <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6">
-                    <h3 className="text-sm font-semibold text-slate-700 mb-4">{editing ? "Edit News Item" : "New News Item"}</h3>
-                    <div className="grid grid-cols-2 gap-4 mb-4">
-                        <Input label="Title" value={form.title} onChange={(v) => setForm((f) => ({ ...f, title: v }))} placeholder="Weekly Research Seminar" />
-                        <Input label="Date" value={form.date} onChange={(v) => setForm((f) => ({ ...f, date: v }))} placeholder="Every Thursday, 10:00 AM" />
-                    </div>
-                    {/* Photo picker & Category */}
-                    <div className="flex items-center gap-4 mb-4">
-                        <div
-                            onClick={() => fileInputRef.current?.click()}
-                            className="w-16 h-16 rounded-xl border-2 border-dashed border-amber-300 bg-amber-50 flex items-center justify-center text-amber-500 cursor-pointer overflow-hidden hover:bg-amber-100 transition-colors shrink-0"
-                            title="Upload cover photo"
-                        >
-                            {form.photoUrl ? (
-                                <>
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={form.photoUrl} alt="preview" className="w-full h-full object-cover" />
-                                </>
-                            ) : uploading ? (
-                                <span className="text-[10px] font-medium animate-pulse">uploading…</span>
-                            ) : (
-                                <span className="text-xl">📷</span>
-                            )}
+                <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6">
+                    <h3 className="text-sm font-semibold text-slate-700 mb-4">{editing ? "Edit Facility" : "New Facility"}</h3>
+                    <div className="flex flex-col sm:flex-row gap-6 mb-4">
+                        <div className="flex flex-col items-center gap-3">
+                            <div className="w-24 h-24 rounded-2xl bg-white border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden">
+                                {form.photoUrl ? (
+                                    // eslint-disable-next-line @next/next/no-img-element
+                                    <img src={form.photoUrl} alt="Cover" className="w-full h-full object-cover" />
+                                ) : (
+                                    <span className="text-3xl text-slate-300">🔧</span>
+                                )}
+                            </div>
+                            <div>
+                                <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
+                                <Btn variant="secondary" size="sm" onClick={() => fileInputRef.current?.click()} disabled={uploading}>
+                                    {uploading ? "Uploading..." : "Upload Image"}
+                                </Btn>
+                            </div>
                         </div>
-                        {form.photoUrl && (
-                            <button onClick={() => setForm((f) => ({ ...f, photoUrl: null }))} className="text-xs text-red-500 hover:underline">
-                                Remove
-                            </button>
-                        )}
-                        <input
-                            ref={fileInputRef}
-                            type="file"
-                            accept="image/*"
-                            className="hidden"
-                            onChange={handleFileChange}
-                        />
-
-                        <div className="flex flex-col gap-1 ml-auto shrink-0 w-48">
-                            <label className="text-xs font-semibold text-slate-600">Category</label>
-                            <select
-                                value={form.category}
-                                onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
-                                className="px-3 py-2 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-brand-200"
-                            >
-                                {categoryOptions.map((c) => <option key={c} value={c}>{c}</option>)}
-                            </select>
+                        <div className="flex-1 flex flex-col gap-4 justify-center">
+                            <Input label="Title" value={form.title} onChange={(v) => setForm((f) => ({ ...f, title: v }))} placeholder="Equipment name…" />
+                            <Input label="Specs (Optional)" value={form.specs || ""} onChange={(v) => setForm((f) => ({ ...f, specs: v }))} placeholder="e.g. High Resolution Laser System" />
                         </div>
                     </div>
-                    <Textarea label="Description" value={form.description} onChange={(v) => setForm((f) => ({ ...f, description: v }))} placeholder="Activity details…" />
+                    <Textarea label="Description" value={form.description} onChange={(v) => setForm((f) => ({ ...f, description: v }))} placeholder="Brief description…" />
                     <div className="flex gap-2 mt-5">
                         <Btn onClick={save} disabled={saving || !form.title} className={(saving || !form.title) ? "opacity-50" : ""}>{saving ? "Saving…" : editing ? "Save Changes" : "Add"}</Btn>
                         <Btn variant="secondary" onClick={cancel}>Cancel</Btn>
@@ -928,31 +868,26 @@ function ActivitiesTab() {
             {loading ? (
                 <div className="flex items-center justify-center py-16 text-slate-400 text-sm">Loading…</div>
             ) : (
-                <div className="flex flex-col gap-3">
-                    {items.length === 0 && !showForm && <div className="text-center py-12 text-slate-400 text-sm">No news yet. Click &quot;+ Add News Item&quot; to get started.</div>}
-                    {items.map((a) => (
-                        <div key={a.id} className="p-5 bg-white border border-slate-200 rounded-2xl hover:border-slate-300 transition-colors">
-                            <div className="flex items-start gap-4">
-                                <div className="w-16 h-16 rounded-xl bg-amber-50 flex items-center justify-center text-2xl shrink-0 overflow-hidden border border-amber-100">
-                                    {a.photoUrl ? (
-                                        // eslint-disable-next-line @next/next/no-img-element
-                                        <img src={a.photoUrl} alt={a.title} className="w-full h-full object-cover" />
-                                    ) : (
-                                        a.emoji || "🎉"
-                                    )}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-semibold text-slate-800">{a.title}</p>
-                                    <div className="flex items-center gap-2 mt-0.5">
-                                        <Badge color={catColor[a.category] ?? "blue"}>{a.category}</Badge>
-                                        <span className="text-xs text-slate-400">{a.date}</span>
-                                    </div>
-                                    <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">{a.description}</p>
-                                </div>
-                                <div className="flex gap-1 shrink-0">
-                                    <Btn variant="ghost" size="sm" onClick={() => edit(a)}>✏️</Btn>
-                                    <Btn variant="danger" size="sm" onClick={() => del(a.id)}>🗑</Btn>
-                                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {items.length === 0 && !showForm && <div className="col-span-2 text-center py-12 text-slate-400 text-sm">No facilities yet. Click &quot;+ Add Facility&quot; to get started.</div>}
+                    {items.map((f) => (
+                        <div key={f.id} className="flex gap-4 p-5 bg-white border border-slate-200 rounded-2xl hover:border-slate-300 transition-colors items-center">
+                            <div className="w-16 h-16 rounded-xl bg-slate-50 flex items-center justify-center text-2xl overflow-hidden shrink-0 border border-slate-100">
+                                {f.photoUrl ? (
+                                    // eslint-disable-next-line @next/next/no-img-element
+                                    <img src={f.photoUrl} alt={f.title} className="w-full h-full object-cover" />
+                                ) : (
+                                    "🔧"
+                                )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <p className="text-sm font-semibold text-slate-800">{f.title}</p>
+                                {f.specs && <Badge color="blue">{f.specs}</Badge>}
+                                <p className="text-xs text-slate-500 mt-1.5 leading-relaxed truncate">{f.description}</p>
+                            </div>
+                            <div className="flex gap-1 shrink-0">
+                                <Btn variant="ghost" size="sm" onClick={() => edit(f)} aria-label="Edit">✏️</Btn>
+                                <Btn variant="danger" size="sm" onClick={() => del(f.id)} aria-label="Delete">🗑</Btn>
                             </div>
                         </div>
                     ))}
@@ -965,20 +900,50 @@ function ActivitiesTab() {
 // ─── Overview Tab ─────────────────────────────────────────────────────────────
 
 function OverviewTab({ onNav }: { onNav: (tab: Tab) => void }) {
+    const [counts, setCounts] = useState<{ publications: number; news: number; people: number; research: number; facilities: number } | null>(null);
+
+    useEffect(() => {
+        let cancelled = false;
+        (async () => {
+            try {
+                const [pubs, news, members, research, facilities] = await Promise.all([
+                    fetch("/api/publications").then((r) => r.json()),
+                    fetch("/api/news").then((r) => r.json()),
+                    fetch("/api/members").then((r) => r.json()),
+                    fetch("/api/research-areas").then((r) => r.json()),
+                    fetch("/api/facilities").then((r) => r.json()),
+                ]);
+                if (cancelled) return;
+                setCounts({
+                    publications: Array.isArray(pubs) ? pubs.length : 0,
+                    news: Array.isArray(news) ? news.length : 0,
+                    people: Array.isArray(members) ? members.length : 0,
+                    research: Array.isArray(research) ? research.length : 0,
+                    facilities: Array.isArray(facilities) ? facilities.length : 0,
+                });
+            } catch {
+                if (!cancelled) setCounts({ publications: 0, news: 0, people: 0, research: 0, facilities: 0 });
+            }
+        })();
+        return () => { cancelled = true; };
+    }, []);
+
     const cards = [
-        { label: "Publications", value: seedPublications.length, color: "blue", tab: "publications" as Tab },
-        { label: "Announcements", value: seedNews.length, color: "amber", tab: "news" as Tab },
-        { label: "Team Members", value: seedMembers.length, color: "purple", tab: "people" as Tab },
-        { label: "Research Areas", value: seedResearch.length, color: "green", tab: "research" as Tab },
+        { label: "Publications", value: counts?.publications ?? "…", color: "blue", tab: "publications" as Tab },
+        { label: "News", value: counts?.news ?? "…", color: "amber", tab: "news" as Tab },
+        { label: "Team Members", value: counts?.people ?? "…", color: "purple", tab: "people" as Tab },
+        { label: "Research Areas", value: counts?.research ?? "…", color: "green", tab: "research" as Tab },
+        { label: "Facilities", value: counts?.facilities ?? "…", color: "indigo", tab: "facilities" as Tab },
     ];
     const colorMap: Record<string, string> = {
         blue: "from-blue-500 to-cyan-500",
         amber: "from-amber-400 to-orange-500",
         purple: "from-purple-500 to-violet-600",
         green: "from-emerald-500 to-teal-500",
+        indigo: "from-indigo-500 to-blue-600",
     };
     const bgMap: Record<string, string> = {
-        blue: "bg-blue-50", amber: "bg-amber-50", purple: "bg-purple-50", green: "bg-emerald-50",
+        blue: "bg-blue-50", amber: "bg-amber-50", purple: "bg-purple-50", green: "bg-emerald-50", indigo: "bg-indigo-50",
     };
 
     return (
@@ -989,7 +954,7 @@ function OverviewTab({ onNav }: { onNav: (tab: Tab) => void }) {
             </div>
 
             {/* Stat cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
                 {cards.map((c) => (
                     <button
                         key={c.label}
@@ -1010,7 +975,7 @@ function OverviewTab({ onNav }: { onNav: (tab: Tab) => void }) {
                 <h3 className="text-sm font-semibold text-slate-700 mb-3">Quick Tips</h3>
                 <ul className="flex flex-col gap-2 text-xs text-slate-500">
                     <li className="flex gap-2"><span className="text-blue-400">•</span> Use the tabs above to manage each content section.</li>
-                    <li className="flex gap-2"><span className="text-blue-400">•</span> Changes are held in-memory for this session. Connect a database to persist them.</li>
+                    <li className="flex gap-2"><span className="text-blue-400">•</span> Changes save directly to the database and reflect on the live site immediately.</li>
                     <li className="flex gap-2"><span className="text-blue-400">•</span> Admin access is controlled server-side. Set <code className="bg-white px-1 py-0.5 rounded border border-slate-200">ADMIN_PASSWORD</code> and <code className="bg-white px-1 py-0.5 rounded border border-slate-200">ADMIN_SESSION_TOKEN</code> in production.</li>
                 </ul>
             </div>
@@ -1098,7 +1063,7 @@ function Dashboard({ onLogout }: { onLogout: () => Promise<void> | void }) {
                     {activeTab === "news" && <NewsTab />}
                     {activeTab === "people" && <PeopleTab />}
                     {activeTab === "research" && <ResearchTab />}
-                    {activeTab === "activities" && <ActivitiesTab />}
+                    {activeTab === "facilities" && <FacilitiesTab />}
                 </div>
             </main>
         </div>

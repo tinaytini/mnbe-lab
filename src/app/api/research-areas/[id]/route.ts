@@ -6,7 +6,7 @@ import { requireAdminAuth } from "@/lib/admin-auth";
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
-        const unauthorized = requireAdminAuth(req);
+        const unauthorized = await requireAdminAuth(req);
         if (unauthorized) return unauthorized;
 
         const { id } = await params;
@@ -22,7 +22,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
-        const unauthorized = requireAdminAuth(_req);
+        const unauthorized = await requireAdminAuth(_req);
         if (unauthorized) return unauthorized;
 
         const { id } = await params;

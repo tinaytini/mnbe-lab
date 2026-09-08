@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { Database, Zap } from "lucide-react";
+
+export const metadata: Metadata = {
+    title: "Biomechanics | YAS Lab",
+    description: "The YAS Lab's biomechanics research using C. elegans as a model organism for neuromuscular disease and genetic research.",
+};
 
 export default function BiomechanicsPage() {
     return (

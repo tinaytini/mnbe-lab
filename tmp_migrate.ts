@@ -11,16 +11,16 @@ async function main() {
     try {
         await sql`ALTER TABLE "research_areas" ADD COLUMN "photo_url" varchar(512);`;
         console.log("Added photo_url column.");
-    } catch (e: any) {
-        console.log("Error adding photo_url:", e.message);
+    } catch (e) {
+        console.log("Error adding photo_url:", e instanceof Error ? e.message : e);
     }
 
     // Drop icon column
     try {
         await sql`ALTER TABLE "research_areas" DROP COLUMN "icon";`;
         console.log("Dropped icon column.");
-    } catch (e: any) {
-        console.log("Error dropping icon:", e.message);
+    } catch (e) {
+        console.log("Error dropping icon:", e instanceof Error ? e.message : e);
     }
     
     console.log("Migration finished.");

@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import { db } from "@/db";
 import { researchAreas } from "@/db/schema";
 import { desc } from "drizzle-orm";
+
+export const metadata: Metadata = {
+    title: "Research Areas | YAS Lab",
+    description: "Explore the research areas of the YAS Lab: molecular nanotechnology, biosystems engineering, and drug delivery at NYU Abu Dhabi.",
+};
 
 export const revalidate = 60;
 

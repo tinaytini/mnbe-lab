@@ -1,20 +1,39 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ADMIN_COOKIE_NAME, getAdminPassword, getAdminSessionToken } from "@/lib/admin-auth";
+import {
+    ADMIN_COOKIE_NAME,
+    clearLoginAttempts,
+    createAdminSession,
+    getAdminPassword,
+    getClientIp,
+    isLoginRateLimited,
+    recordFailedLogin,
+} from "@/lib/admin-auth";
 
 export async function POST(req: NextRequest) {
     try {
+        const ip = getClientIp(req);
+        if (isLoginRateLimited(ip)) {
+            return NextResponse.json(
+                { error: "Too many attempts. Try again in a few minutes." },
+                { status: 429 }
+            );
+        }
+
         const body = await req.json();
         const password = String(body?.password ?? "");
         const adminPassword = getAdminPassword();
-        const sessionToken = getAdminSessionToken();
 
-        if (!adminPassword || !sessionToken) {
+        if (!adminPassword) {
             return NextResponse.json({ error: "Admin auth is not configured" }, { status: 500 });
         }
 
         if (password !== adminPassword) {
+            recordFailedLogin(ip);
             return NextResponse.json({ error: "Invalid password" }, { status: 401 });
         }
+
+        clearLoginAttempts(ip);
+        const sessionToken = await createAdminSession();
 
         const response = NextResponse.json({ authenticated: true });
         response.cookies.set({

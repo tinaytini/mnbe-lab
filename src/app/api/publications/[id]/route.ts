@@ -10,7 +10,7 @@ export async function PUT(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const unauthorized = requireAdminAuth(req);
+        const unauthorized = await requireAdminAuth(req);
         if (unauthorized) return unauthorized;
 
         const { id } = await params;
@@ -41,7 +41,7 @@ export async function DELETE(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const unauthorized = requireAdminAuth(_req);
+        const unauthorized = await requireAdminAuth(_req);
         if (unauthorized) return unauthorized;
 
         const { id } = await params;

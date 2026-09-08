@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import { db } from "@/db";
 import { members } from "@/db/schema";
-import { asc, desc } from "drizzle-orm";
+import { asc } from "drizzle-orm";
 import PeopleGrid from "./PeopleGrid";
 import PeopleHero from "./PeopleHero";
+
+export const metadata: Metadata = {
+    title: "People | YAS Lab",
+    description: "Meet the researchers, postdocs, and students of the YAS Lab (Molecular & Nanoscale Biosystems Engineering) at NYU Abu Dhabi.",
+};
 
 export const revalidate = 60;
 
