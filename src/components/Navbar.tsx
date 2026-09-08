@@ -113,9 +113,6 @@ export default function Navbar() {
                                             }`}
                                     >
                                         {link.label}
-                                        {active && (
-                                            <span className="absolute bottom-1 left-4 right-4 h-[2px] rounded-full bg-brand-500" />
-                                        )}
                                     </Link>
                                 )}
                             </li>
