@@ -13,7 +13,7 @@ export default function PeopleHero() {
                         (e.target as HTMLImageElement).style.display = 'none';
                         const parent = (e.target as HTMLImageElement).parentElement;
                         if (parent) {
-                            parent.style.background = 'linear-gradient(to bottom right, #57068c, #1e0231)';
+                            parent.style.background = 'linear-gradient(to bottom right, #6610f2, #1e053d)';
                         }
                     }}
                 />

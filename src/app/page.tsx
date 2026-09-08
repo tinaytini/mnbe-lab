@@ -136,7 +136,7 @@ export default async function Home() {
         ))}
 
         {/* Content */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center">
 
             {/* Left Column: Text & CTA */}
@@ -278,7 +278,7 @@ export default async function Home() {
           3. RECENT PUBLICATIONS
       ══════════════════════════════════════════════════════ */}
       <section className="py-24 bg-white">
-        <div className="max-w-5xl mx-auto px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <SectionHeading
             badge="Latest Work"
             title="Recent Publications"
@@ -363,7 +363,7 @@ export default async function Home() {
         />
         <div className="absolute top-0 right-0 w-150 h-100 rounded-full bg-brand-500/10 blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-8">
+        <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8">
           <SectionHeading
             badge="Latest Updates"
             title="News"
@@ -386,11 +386,11 @@ export default async function Home() {
           5. FOOTER CTA
       ══════════════════════════════════════════════════════ */}
       <section className="py-20 bg-white border-t border-slate-100">
-        <div className="max-w-3xl mx-auto px-6 text-center">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-slate-900 tracking-tight mb-4">
             Interested in collaborating?
           </h2>
-          <p className="text-slate-500 text-base mb-12 leading-relaxed">
+          <p className="text-slate-500 text-base mb-12 leading-relaxed max-w-2xl mx-auto">
             We welcome inquiries from prospective PhD students, postdoctoral
             researchers, and industry partners.
           </p>
