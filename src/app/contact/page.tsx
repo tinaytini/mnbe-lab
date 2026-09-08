@@ -9,7 +9,7 @@ export default function ContactPage() {
     return (
         <main className="bg-slate-50 pt-24 pb-20">
             {/* Header */}
-            <section className="max-w-4xl mx-auto px-6 lg:px-8 text-center mb-14">
+            <section className="max-w-6xl mx-auto px-6 lg:px-8 text-center mb-14">
                 <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-100 bg-brand-50 text-brand-500 text-sm font-medium mb-6">
                     <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
                     Get in Touch
@@ -23,7 +23,7 @@ export default function ContactPage() {
                 </p>
             </section>
 
-            <div className="max-w-4xl mx-auto px-6 lg:px-8 grid grid-cols-1 md:grid-cols-5 gap-8">
+            <div className="max-w-6xl mx-auto px-6 lg:px-8 grid grid-cols-1 md:grid-cols-5 gap-8">
                 {/* Contact info */}
                 <div className="md:col-span-2 flex flex-col gap-5">
                     {[

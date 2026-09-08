@@ -20,7 +20,7 @@ export default async function PublicationsPage() {
     return (
         <main className="bg-white pt-24 pb-20">
             {/* Header */}
-            <section className="max-w-5xl mx-auto px-6 lg:px-8 text-center mb-16">
+            <section className="max-w-6xl mx-auto px-6 lg:px-8 text-center mb-16">
                 <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-100 bg-brand-50 text-brand-500 text-sm font-medium mb-6">
                     <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
                     Our Output
@@ -34,7 +34,7 @@ export default async function PublicationsPage() {
             </section>
 
             {/* Achievements - Temporarily Commented Out
-            <section className="max-w-5xl mx-auto px-6 lg:px-8 mb-16">
+            <section className="max-w-6xl mx-auto px-6 lg:px-8 mb-16">
                 <h2 className="text-xl font-semibold text-slate-800 mb-6">Highlights</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {achievements.map((a) => (
@@ -52,7 +52,7 @@ export default async function PublicationsPage() {
             */}
 
             {/* Publications list */}
-            <section className="max-w-5xl mx-auto px-6 lg:px-8">
+            <section className="max-w-6xl mx-auto px-6 lg:px-8">
                 <h2 className="text-xl font-semibold text-slate-800 mb-6">
                     Recent Publications
                     <span className="ml-2 text-sm font-normal text-slate-400">({pubs.length})</span>

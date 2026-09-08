@@ -34,7 +34,7 @@ export default function BioinspirationPage() {
             </section>
 
             {/* Introduction */}
-            <section className="max-w-7xl mx-auto px-6 lg:px-8 -mt-24 relative z-20">
+            <section className="max-w-6xl mx-auto px-6 lg:px-8 -mt-24 relative z-20">
                 <div className="bg-white rounded-[2.5rem] shadow-xl border border-slate-200 p-8 sm:p-12">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
                         <div className="lg:col-span-2">
@@ -56,7 +56,7 @@ export default function BioinspirationPage() {
             </section>
 
             {/* Focus Sections */}
-            <section className="max-w-7xl mx-auto px-6 lg:px-8 py-24">
+            <section className="max-w-6xl mx-auto px-6 lg:px-8 py-24">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div className="group p-8 bg-white border border-slate-200 rounded-3xl hover:border-emerald-300 transition-all duration-300">
                         <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 mb-6 group-hover:scale-110 transition-transform">
@@ -84,7 +84,7 @@ export default function BioinspirationPage() {
 
             {/* Gallery/Showcase */}
             <section className="bg-slate-900 py-24 text-white overflow-hidden">
-                <div className="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div className="max-w-6xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     <div className="relative">
                         <div className="absolute -top-20 -left-20 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl" />
                         <h3 className="text-3xl font-bold mb-6">From Biology to Technology</h3>

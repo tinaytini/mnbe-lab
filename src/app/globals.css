@@ -11,18 +11,20 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* Brand palette anchored on #5e17eb — the logo's own native color */
-  --color-brand-50: #f5f1fe;
-  --color-brand-100: #e8defc;
-  --color-brand-200: #ceb9f9;
-  --color-brand-300: #aa85f4;
-  --color-brand-400: #834df0;
-  --color-brand-500: #5e17eb;
-  --color-brand-600: #4810b7;
-  --color-brand-700: #350c88;
-  --color-brand-800: #25085e;
-  --color-brand-900: #18053d;
-  --color-brand-950: #0f0326;
+  /* Brand palette anchored on #56068c — the logo's own native color
+     (wordmark and mark icon were unified to this single color directly
+     in the SVG source, see public/yaslab.svg) */
+  --color-brand-50: #f9f0fe;
+  --color-brand-100: #f0ddfe;
+  --color-brand-200: #e0b6fc;
+  --color-brand-300: #c980fa;
+  --color-brand-400: #af45f7;
+  --color-brand-500: #56068c;
+  --color-brand-600: #480575;
+  --color-brand-700: #360458;
+  --color-brand-800: #270340;
+  --color-brand-900: #1b022c;
+  --color-brand-950: #0f0118;
 }
 
 @media (prefers-color-scheme: dark) {

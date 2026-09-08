@@ -34,7 +34,7 @@ export default function BiosensingPage() {
             </section>
 
             {/* Content Section */}
-            <section className="max-w-7xl mx-auto px-6 lg:px-8 -mt-24 relative z-20 pb-24">
+            <section className="max-w-6xl mx-auto px-6 lg:px-8 -mt-24 relative z-20 pb-24">
                 <div className="bg-white rounded-[2.5rem] shadow-xl border border-slate-200 p-8 sm:p-12">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
                         <div className="order-2 lg:order-1">

@@ -22,7 +22,7 @@ export default async function PeoplePage() {
             <PeopleHero />
 
             {/* Header (Original) */}
-            <section className="max-w-5xl mx-auto px-6 lg:px-8 text-center mb-16">
+            <section className="max-w-6xl mx-auto px-6 lg:px-8 text-center mb-16">
 
                 <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
                     Our diverse, interdisciplinary team brings together expertise from
@@ -31,7 +31,7 @@ export default async function PeoplePage() {
             </section>
 
             {/* Members by role */}
-            <div className="max-w-5xl mx-auto px-6 lg:px-8 flex flex-col gap-12">
+            <div className="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col gap-12">
                 {allMembers.length === 0 ? (
                     <div className="text-center py-16 text-slate-400">
                         <p className="text-4xl mb-3">👥</p>

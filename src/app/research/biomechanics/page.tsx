@@ -34,7 +34,7 @@ export default function BiomechanicsPage() {
             </section>
 
             {/* Content Sections */}
-            <div className="max-w-7xl mx-auto px-6 lg:px-8 -mt-24 relative z-20 space-y-12 pb-24">
+            <div className="max-w-6xl mx-auto px-6 lg:px-8 -mt-24 relative z-20 space-y-12 pb-24">
                 
                 {/* Introduction/First Project Card */}
                 <section className="bg-white rounded-[2.5rem] shadow-xl border border-slate-200 p-8 sm:p-12">

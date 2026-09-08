@@ -16,7 +16,7 @@ export default async function NewsPage() {
     return (
         <main className="bg-slate-50 pt-24 pb-20">
             {/* Header */}
-            <section className="max-w-5xl mx-auto px-6 lg:px-8 text-center mb-16">
+            <section className="max-w-6xl mx-auto px-6 lg:px-8 text-center mb-16">
                 <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-100 bg-brand-50 text-brand-500 text-sm font-medium mb-6">
                     <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
                     Life in the Lab
@@ -29,7 +29,7 @@ export default async function NewsPage() {
                 </p>
             </section>
 
-            <div className="max-w-5xl mx-auto px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto px-6 lg:px-8">
                 {items.length === 0 ? (
                     <div className="text-center py-16 text-slate-400">
                         <p className="text-4xl mb-3">📰</p>
