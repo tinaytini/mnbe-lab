@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Activity, Bug, Leaf, FlaskConical } from "lucide-react";
 import { db } from "@/db";
@@ -61,6 +62,10 @@ function SectionHeading({
 }
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export const revalidate = 60;
 

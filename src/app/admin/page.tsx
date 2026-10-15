@@ -7,7 +7,7 @@ import Logo from "@/components/Logo";
 
 type Publication = { id: number; year: string; title: string; authors: string; journal: string; url?: string | null; description?: string | null };
 type NewsItem = { id: number; date: string; title: string; body: string; url?: string | null; photoUrl?: string | null };
-type Member = { id: number; name: string; role: string; focus: string; email?: string | null; originCountry?: string | null; biography?: string | null; photoUrl?: string | null };
+type Member = { id: number; name: string; role: string; focus: string; email?: string | null; originCountry?: string | null; biography?: string | null; photoUrl?: string | null; isAlumni?: boolean };
 type ResearchArea = { id: number; photoUrl: string | null; title: string; description: string };
 type Facility = { id: number; title: string; description: string; specs?: string | null; photoUrl?: string | null };
 
@@ -467,7 +467,7 @@ function PeopleTab() {
     const [adding, setAdding] = useState(false);
     const [saving, setSaving] = useState(false);
     const [uploading, setUploading] = useState(false);
-    const blank: Omit<Member, "id"> = { name: "", role: "", focus: "", email: "", originCountry: "", biography: "", photoUrl: null };
+    const blank: Omit<Member, "id"> = { name: "", role: "", focus: "", email: "", originCountry: "", biography: "", photoUrl: null, isAlumni: false };
     const [form, setForm] = useState<Omit<Member, "id">>(blank);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -519,7 +519,7 @@ function PeopleTab() {
         setItems((prev) => prev.filter((m) => m.id !== id));
     };
 
-    const edit = (m: Member) => { setEditing(m); setAdding(false); setForm({ name: m.name, role: m.role, focus: m.focus, email: m.email || "", originCountry: m.originCountry || "", biography: m.biography || "", photoUrl: m.photoUrl }); };
+    const edit = (m: Member) => { setEditing(m); setAdding(false); setForm({ name: m.name, role: m.role, focus: m.focus, email: m.email || "", originCountry: m.originCountry || "", biography: m.biography || "", photoUrl: m.photoUrl, isAlumni: !!m.isAlumni }); };
     const cancel = () => { setEditing(null); setAdding(false); setForm(blank); };
     const showForm = editing !== null || adding;
 
@@ -579,6 +579,15 @@ function PeopleTab() {
                     <div className="mt-4">
                         <Textarea label="Biography (Optional)" value={form.biography || ""} onChange={(v) => setForm((f) => ({ ...f, biography: v }))} placeholder="Background, education, current projects..." rows={5} />
                     </div>
+                    <label className="flex items-center gap-2 mt-4 text-sm text-slate-700 cursor-pointer select-none">
+                        <input
+                            type="checkbox"
+                            checked={!!form.isAlumni}
+                            onChange={(e) => setForm((f) => ({ ...f, isAlumni: e.target.checked }))}
+                            className="w-4 h-4 accent-purple-600"
+                        />
+                        Alumni <span className="text-xs text-slate-400">(former member — shown in the Alumni section)</span>
+                    </label>
                     <div className="flex gap-2 mt-5">
                         <Btn onClick={save} disabled={saving || uploading || !form.name} className={(saving || uploading || !form.name) ? "opacity-50" : ""}>{saving ? "Saving…" : editing ? "Save Changes" : "Add"}</Btn>
                         <Btn variant="secondary" onClick={cancel}>Cancel</Btn>
@@ -605,6 +614,7 @@ function PeopleTab() {
                                 <div className="flex-1 min-w-0">
                                     <p className="text-sm font-semibold text-slate-800">{m.name}</p>
                                     <Badge color={roleColor[m.role] ?? "blue"}>{m.role}</Badge>
+                                    {m.isAlumni && <span className="ml-1.5 inline-block text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">Alumni</span>}
                                     <p className="text-xs text-slate-500 mt-1.5">{m.focus}</p>
                                     {m.email && <p className="text-xs text-slate-400 mt-1">✉️ {m.email}</p>}
                                 </div>

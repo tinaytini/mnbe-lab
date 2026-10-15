@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
         if (unauthorized) return unauthorized;
 
         const body = await req.json();
-        const [row] = await db.insert(members).values({ name: body.name, role: body.role, focus: body.focus, email: body.email || null, originCountry: body.originCountry || null, biography: body.biography || null, photoUrl: body.photoUrl ?? null }).returning();
+        const [row] = await db.insert(members).values({ name: body.name, role: body.role, focus: body.focus, email: body.email || null, originCountry: body.originCountry || null, biography: body.biography || null, photoUrl: body.photoUrl ?? null, isAlumni: Boolean(body.isAlumni) }).returning();
         return NextResponse.json(row, { status: 201 });
     } catch (err) {
         console.error(err);

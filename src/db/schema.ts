@@ -1,4 +1,4 @@
-import { pgTable, serial, text, varchar, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, varchar, timestamp, boolean } from "drizzle-orm/pg-core";
 
 export const publications = pgTable("publications", {
     id: serial("id").primaryKey(),
@@ -30,6 +30,7 @@ export const members = pgTable("members", {
     originCountry: varchar("origin_country", { length: 255 }),
     biography: text("biography"),
     photoUrl: varchar("photo_url", { length: 512 }),
+    isAlumni: boolean("is_alumni").notNull().default(false),
     createdAt: timestamp("created_at").defaultNow(),
 });
 
