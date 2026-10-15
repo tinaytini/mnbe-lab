@@ -40,5 +40,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         console.error("sitemap: failed to load members", err);
     }
 
-    return [...staticRoutes, ...memberRoutes];
+    let newsRoutes: MetadataRoute.Sitemap = [];
+    try {
+        const { db } = await import("@/db");
+        const { news: newsTable } = await import("@/db/schema");
+        const allNews = await db.select().from(newsTable);
+        newsRoutes = allNews.map((item) => ({
+            url: absoluteUrl(`/news/${item.id}`),
+            lastModified: item.createdAt ?? now,
+            changeFrequency: "monthly",
+            priority: 0.7,
+            ...(item.photoUrl && { images: [absoluteUrl(item.photoUrl)] }),
+        }));
+    } catch (err) {
+        console.error("sitemap: failed to load news", err);
+    }
+
+    return [...staticRoutes, ...memberRoutes, ...newsRoutes];
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { db } from "@/db";
 import { news as newsTable } from "@/db/schema";
 import { desc } from "drizzle-orm";
@@ -45,43 +46,42 @@ export default async function NewsPage() {
                                     : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                         }
                     >
-                        {items.map((item) => {
-                            const isExternal = !!item.url;
-                            const Wrapper = isExternal ? "a" : "div";
-                            const linkProps = isExternal
-                                ? { href: item.url as string, target: "_blank", rel: "noopener noreferrer" }
-                                : {};
-                            return (
-                                <Wrapper
-                                    key={item.id}
-                                    {...linkProps}
-                                    className={`flex flex-col gap-4 p-5 rounded-2xl bg-white border border-slate-200 shadow-sm transition-all duration-200 ${isExternal ? "hover:border-brand-300 hover:shadow-md cursor-pointer" : ""
-                                        }`}
-                                >
-                                    {item.photoUrl && (
-                                        <div className="w-full h-40 rounded-xl overflow-hidden border border-slate-100">
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img src={item.photoUrl} alt={item.title} className="w-full h-full object-cover" />
-                                        </div>
-                                    )}
-                                    <div>
-                                        <span className="text-xs font-semibold text-brand-500 uppercase tracking-widest">
-                                            {item.date}
-                                        </span>
-                                        <h3 className="flex items-start justify-between gap-2 text-sm font-semibold text-slate-800 mt-1 mb-2 leading-snug">
-                                            <span>{item.title}</span>
-                                            {isExternal && (
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 text-brand-400 shrink-0 mt-0.5">
+                        {items.map((item) => (
+                            <Link
+                                key={item.id}
+                                href={`/news/${item.id}`}
+                                className="group flex flex-col gap-4 p-5 rounded-2xl bg-white border border-slate-200 shadow-sm transition-all duration-200 hover:border-brand-300 hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
+                            >
+                                {item.photoUrl && (
+                                    <div className="w-full h-44 rounded-xl overflow-hidden border border-slate-100 bg-slate-50">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img src={item.photoUrl} alt={item.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                                    </div>
+                                )}
+                                <div className="flex flex-col flex-1">
+                                    <span className="text-xs font-semibold text-brand-500 uppercase tracking-widest">
+                                        {item.date}
+                                    </span>
+                                    <h3 className="text-base font-semibold text-slate-800 mt-1 mb-2 leading-snug group-hover:text-brand-600 transition-colors line-clamp-2">
+                                        {item.title}
+                                    </h3>
+                                    <p className="text-sm text-slate-500 leading-relaxed line-clamp-3 mb-4">{item.body}</p>
+                                    
+                                    <div className="mt-auto pt-2 flex items-center justify-between text-xs font-semibold text-brand-600">
+                                        <span>Read article →</span>
+                                        {item.url && (
+                                            <span className="inline-flex items-center gap-1 text-slate-400 font-normal">
+                                                <span>Has link</span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
                                                     <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h4a.75.75 0 010 1.5h-4z" clipRule="evenodd" />
                                                     <path fillRule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.198a.75.75 0 00-.053 1.06z" clipRule="evenodd" />
                                                 </svg>
-                                            )}
-                                        </h3>
-                                        <p className="text-sm text-slate-500 leading-relaxed line-clamp-3">{item.body}</p>
+                                            </span>
+                                        )}
                                     </div>
-                                </Wrapper>
-                            );
-                        })}
+                                </div>
+                            </Link>
+                        ))}
                     </div>
                 )}
             </div>
