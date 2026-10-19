@@ -26,16 +26,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const url = memberHref(member);
     const [firstName, ...rest] = member.name.split(" ");
 
+    const keywords = [
+        member.name,
+        `${member.name} NYU`,
+        `${member.name} NYU Abu Dhabi`,
+        member.role,
+        SITE_NAME,
+        SITE_FULL_NAME,
+        "NYU Abu Dhabi",
+        "NYUAD",
+        ...(member.focus ? member.focus.split(/[,;·•]+/).map((s) => s.trim()).filter(Boolean) : []),
+    ];
+
     return {
         title,
         description,
+        keywords,
+        authors: [{ name: member.name, url: absoluteUrl(url) }],
+        creator: member.name,
         alternates: { canonical: url },
         openGraph: {
             type: "profile",
             url,
             title,
             description,
-            siteName: SITE_NAME,
+            siteName: `${SITE_NAME} — ${SITE_FULL_NAME}`,
             firstName,
             lastName: rest.join(" ") || undefined,
             images: member.photoUrl ? [{ url: absoluteUrl(member.photoUrl), alt: member.name }] : undefined,

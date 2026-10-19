@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
 import { db } from "@/db";
 import { publications } from "@/db/schema";
-import { asc } from "drizzle-orm";
+import { desc } from "drizzle-orm";
 import PublicationsList from "@/components/PublicationsList";
 
 export const metadata: Metadata = {
-    title: "Publications & Achievements | YAS Lab",
-    description: "Browse recent peer-reviewed publications and research achievements from the YAS Lab (Molecular & Nanoscale Biosystems Engineering) at NYU Abu Dhabi.",
+    title: "Publications & Achievements | MNBE Lab",
+    description: "Browse recent peer-reviewed publications and research achievements from the MNBE Lab (Molecular & Nanoscale Biosystems Engineering) at NYU Abu Dhabi.",
+    keywords: [
+        "MNBE Lab publications",
+        "Rafael Song research papers",
+        "NYU Abu Dhabi science papers",
+        "Biosystems engineering articles",
+        "Molecular nanotechnology publications",
+    ],
+    alternates: { canonical: "/publications" },
 };
 
 export const revalidate = 60; // ISR — re-fetch from DB every 60 seconds
@@ -15,7 +23,7 @@ export default async function PublicationsPage() {
     const pubs = await db
         .select()
         .from(publications)
-        .orderBy(asc(publications.createdAt));
+        .orderBy(desc(publications.year), desc(publications.createdAt), desc(publications.id));
 
     return (
         <main className="bg-white pt-24 pb-20">

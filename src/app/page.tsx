@@ -110,91 +110,70 @@ export default async function Home() {
       {/* ══════════════════════════════════════════════════════
           1. HERO
       ══════════════════════════════════════════════════════ */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        {/* Background */}
-        <div className="absolute inset-0 bg-linear-to-br from-slate-900 via-brand-900 to-slate-900" />
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-brand-900">
+        {/* Subtle brand lighting and grid matching footer palette */}
+        <div className="absolute inset-0 bg-linear-to-b from-brand-950/20 via-transparent to-brand-950/40 pointer-events-none" />
         <div
-          className="absolute inset-0 opacity-[0.04]"
+          className="absolute inset-0 opacity-[0.03] pointer-events-none"
           style={{
             backgroundImage:
               "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
             backgroundSize: "60px 60px",
           }}
         />
-        <div className="absolute top-0 right-0 w-200 h-150 rounded-full bg-brand-500/20 blur-[100px] pointer-events-none translate-x-1/3 -translate-y-1/4" />
-        <div className="absolute bottom-0 left-0 w-125 h-125 rounded-full bg-brand-400/10 blur-[80px] pointer-events-none -translate-x-1/3 translate-y-1/3" />
-
-        {/* Animated Particles */}
-        {[...Array(6)].map((_, i) => (
-          <span
-            key={i}
-            className="absolute rounded-full bg-brand-300/20 animate-pulse hidden md:block"
-            style={{
-              width: `${8 + i * 4}px`,
-              height: `${8 + i * 4}px`,
-              top: `${15 + i * 13}%`,
-              left: `${10 + i * 14}%`,
-              animationDelay: `${i * 0.7}s`,
-              animationDuration: `${3 + i}s`,
-            }}
-          />
-        ))}
+        <div className="absolute top-0 right-0 w-200 h-150 rounded-full bg-brand-500/20 blur-[120px] pointer-events-none translate-x-1/3 -translate-y-1/4" />
+        <div className="absolute bottom-0 left-0 w-125 h-125 rounded-full bg-brand-400/15 blur-[100px] pointer-events-none -translate-x-1/3 translate-y-1/3" />
 
         {/* Content */}
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 lg:px-8">
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center">
 
-            {/* Left Column: Text & CTA */}
-            <div className="text-left py-12 lg:py-0">
-              <div className="hidden sm:inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-300/30 bg-brand-500/10 text-brand-200 text-sm font-medium mb-8 backdrop-blur-sm">
+            {/* Left Column: Text */}
+            <div className="text-left py-6 lg:py-0">
+              <div className="hidden sm:inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-300/30 bg-brand-500/20 text-brand-200 text-sm font-medium mb-8 backdrop-blur-sm">
                 <span className="w-1.5 h-1.5 rounded-full bg-brand-300 animate-pulse" />
                 Advancing Nanoscale Biosystems Engineering
               </div>
 
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.08] tracking-tight mb-6 mt-4">
-                YAS{" "}
+                MNBE{" "}
                 <span className="inline-block bg-linear-to-r from-brand-300 via-brand-200 to-brand-400 bg-clip-text text-transparent">
                   Research
                 </span>{" "}
                 <br className="hidden sm:block" />Laboratory
               </h1>
 
-              <p className="text-lg sm:text-xl text-slate-400 leading-relaxed mb-10 max-w-xl">
+              <p className="text-lg sm:text-xl text-brand-100/90 leading-relaxed max-w-xl">
                 Our research aims to understand the concepts and mechanisms of complex bioscience challenges lying at the interface of biology, physics, and engineering. We investigate biological processes at the micro- and nanoscale.
               </p>
-
-              <Link
-                href="/publications"
-                className="lg:hidden inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-linear-to-r from-brand-500 to-brand-400 text-white font-semibold text-sm shadow-xl shadow-brand-500/25 hover:shadow-brand-500/40 hover:-translate-y-0.5 transition-all duration-200 w-full sm:w-auto"
-              >
-                View Publications
-              </Link>
             </div>
 
-            {/* Right Column: Visual Showcase */}
-            <div className="relative hidden lg:flex items-center justify-center p-8">
-              <div className="flex flex-col items-end gap-4 w-full max-w-sm xl:max-w-md">
+            {/* Right Column: Visual Showcase & CTAs */}
+            <div className="relative flex items-center justify-center p-4 lg:p-8">
+              <div className="flex flex-col items-center gap-6 w-full max-w-sm xl:max-w-md">
                 <img
                   src="/uploads/mnbe-lab.png"
                   alt="MNBE Lab Logo"
                   className="w-full h-auto object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
                 />
-                <Link
-                  href="/publications"
-                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-linear-to-r from-brand-500 to-brand-400 text-white font-semibold text-sm shadow-xl shadow-brand-500/25 hover:shadow-brand-500/40 hover:-translate-y-0.5 transition-all duration-200 whitespace-nowrap"
-                >
-                  View Publications
-                </Link>
+                <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 w-full pt-2">
+                  <Link
+                    href="/publications"
+                    className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full bg-linear-to-r from-brand-500 to-brand-400 text-white font-semibold text-sm shadow-xl shadow-brand-500/25 hover:shadow-brand-500/40 hover:-translate-y-0.5 transition-all duration-200"
+                  >
+                    View Publications
+                  </Link>
+                  <Link
+                    href="/people"
+                    className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full border border-white/20 text-white hover:bg-white/10 font-semibold text-sm transition-all duration-200 backdrop-blur-sm"
+                  >
+                    Meet the Team
+                  </Link>
+                </div>
               </div>
             </div>
 
           </div>
-        </div>
-
-        {/* Scroll cue (bottom left instead of center) */}
-        <div className="absolute bottom-8 left-8 hidden lg:flex flex-col items-center gap-2 text-white/30">
-          <span className="text-[10px] font-bold tracking-[0.2em] uppercase origin-left rotate-90 translate-x-2 translate-y-8">Scroll</span>
-          <div className="w-px h-16 bg-linear-to-b from-white/30 to-transparent mt-16" />
         </div>
       </section>
 

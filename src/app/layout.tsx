@@ -17,12 +17,31 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "YAS Lab — Nanoscale Biosystems Engineering",
-  description:
-    "Pioneering research at the intersection of molecular nanotechnology, biosystems engineering, and biomedical innovation.",
+  title: {
+    default: `${SITE_NAME} — ${SITE_FULL_NAME}`,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  keywords: [
+    "MNBE Lab",
+    "YAS Lab",
+    "Nanoscale Biosystems Engineering",
+    "Molecular Nanotechnology",
+    "NYU Abu Dhabi",
+    "NYUAD",
+    "Rafael Song",
+    "Biosensing",
+    "Biomechanics",
+    "Bioinspiration",
+    "Microfluidics",
+    "Lab-on-a-chip",
+  ],
+  authors: [{ name: "MNBE Lab", url: SITE_URL }],
+  creator: "MNBE Lab — NYU Abu Dhabi",
+  publisher: "New York University Abu Dhabi",
   openGraph: {
     type: "website",
-    siteName: SITE_NAME,
+    siteName: `${SITE_NAME} — ${SITE_FULL_NAME}`,
     locale: "en_US",
   },
   robots: {

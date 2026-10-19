@@ -184,13 +184,22 @@ function PublicationsTab() {
     const blank: Omit<Publication, "id"> = { year: "", title: "", authors: "", journal: "", url: "", description: "" };
     const [form, setForm] = useState<Omit<Publication, "id">>(blank);
 
+    const sortPubs = (list: Publication[]) =>
+        [...list].sort((a, b) => {
+            const yA = parseInt(a.year, 10) || 0;
+            const yB = parseInt(b.year, 10) || 0;
+            if (yB !== yA) return yB - yA;
+            return (b.id ?? 0) - (a.id ?? 0);
+        });
+
     const load = async () => {
         setLoading(true);
         setError(null);
         try {
             const res = await fetch("/api/publications");
             if (!res.ok) throw new Error("Failed to load");
-            setItems(await res.json());
+            const data = await res.json();
+            setItems(sortPubs(data));
         } catch {
             setError("Could not load publications.");
         } finally {
@@ -211,7 +220,7 @@ function PublicationsTab() {
                 });
                 if (!res.ok) throw new Error();
                 const updated = await res.json();
-                setItems((prev) => prev.map((p) => (p.id === editing.id ? updated : p)));
+                setItems((prev) => sortPubs(prev.map((p) => (p.id === editing.id ? updated : p))));
                 setEditing(null);
             } else {
                 const res = await fetch("/api/publications", {
@@ -221,7 +230,7 @@ function PublicationsTab() {
                 });
                 if (!res.ok) throw new Error();
                 const created = await res.json();
-                setItems((prev) => [...prev, created]);
+                setItems((prev) => sortPubs([created, ...prev]));
                 setAdding(false);
             }
             setForm(blank);

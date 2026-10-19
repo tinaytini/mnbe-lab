@@ -4,9 +4,22 @@ import PeopleGrid from "./PeopleGrid";
 import PeopleHero from "./PeopleHero";
 
 export const metadata: Metadata = {
-    title: "People | YAS Lab",
-    description: "Meet the researchers, postdocs, and students of the YAS Lab (Molecular & Nanoscale Biosystems Engineering) at NYU Abu Dhabi.",
+    title: "People | MNBE Lab — NYU Abu Dhabi",
+    description: "Meet the researchers, postdocs, and students of the MNBE Lab (Molecular & Nanoscale Biosystems Engineering) at NYU Abu Dhabi.",
+    keywords: [
+        "MNBE Lab team",
+        "NYU Abu Dhabi researchers",
+        "Rafael Song lab members",
+        "Biosystems engineering researchers",
+        "Molecular nanotechnology team",
+    ],
     alternates: { canonical: "/people" },
+    openGraph: {
+        title: "People | MNBE Lab — NYU Abu Dhabi",
+        description: "Meet our multidisciplinary team of researchers and students at NYU Abu Dhabi.",
+        url: "/people",
+        type: "website",
+    },
 };
 
 export const revalidate = 60;

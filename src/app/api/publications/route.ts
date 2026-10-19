@@ -7,7 +7,10 @@ import { requireAdminAuth } from "@/lib/admin-auth";
 // GET /api/publications — list all
 export async function GET() {
     try {
-        const rows = await db.select().from(publications).orderBy(desc(publications.createdAt));
+        const rows = await db
+            .select()
+            .from(publications)
+            .orderBy(desc(publications.year), desc(publications.createdAt), desc(publications.id));
         return NextResponse.json(rows);
     } catch (err) {
         console.error(err);

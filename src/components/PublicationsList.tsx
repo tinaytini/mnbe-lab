@@ -94,16 +94,23 @@ export default function PublicationsList({ pubs }: { pubs: Publication[] }) {
 
     const filtered = useMemo(() => {
         const q = debouncedQuery.trim().toLowerCase();
-        return pubs.filter((p) => {
-            const matchesYear = year === "all" || p.year === year;
-            if (!matchesYear) return false;
-            if (!q) return true;
-            return (
-                p.title.toLowerCase().includes(q) ||
-                p.authors.toLowerCase().includes(q) ||
-                p.journal.toLowerCase().includes(q)
-            );
-        });
+        return pubs
+            .filter((p) => {
+                const matchesYear = year === "all" || p.year === year;
+                if (!matchesYear) return false;
+                if (!q) return true;
+                return (
+                    p.title.toLowerCase().includes(q) ||
+                    p.authors.toLowerCase().includes(q) ||
+                    p.journal.toLowerCase().includes(q)
+                );
+            })
+            .sort((a, b) => {
+                const yA = parseInt(a.year, 10) || 0;
+                const yB = parseInt(b.year, 10) || 0;
+                if (yB !== yA) return yB - yA;
+                return (b.id ?? 0) - (a.id ?? 0);
+            });
     }, [pubs, debouncedQuery, year]);
 
     return (
