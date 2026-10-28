@@ -25,8 +25,8 @@ export const metadata: Metadata = {
   keywords: [
     "MNBE Lab",
     "YAS Lab",
-    "Nanoscale Biosystems Engineering",
-    "Molecular Nanotechnology",
+    "Micro and Nanoscale Bioengineering",
+    "Nanoscale Bioengineering",
     "NYU Abu Dhabi",
     "NYUAD",
     "Rafael Song",

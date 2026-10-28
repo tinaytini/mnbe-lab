@@ -62,8 +62,8 @@ export default function ContactPage() {
                 <div className="md:col-span-3 bg-white rounded-2xl border border-slate-200 shadow-sm p-10 flex flex-col items-center justify-center text-center gap-4">
                     <h2 className="text-2xl font-bold text-slate-900">Join the MNBE Lab Team</h2>
                     <p className="text-sm text-slate-500 max-w-md leading-relaxed">
-                        Looking for career opportunities with the Molecular &amp; Nanoscale
-                        Biosystems Engineering Lab at NYU Abu Dhabi? Visit the official NYU Abu
+                        Looking for career opportunities with the Micro and Nanoscale
+                        Bioengineering Lab at NYU Abu Dhabi? Visit the official NYU Abu
                         Dhabi careers page to view all open positions within our research center.
                     </p>
                     <a

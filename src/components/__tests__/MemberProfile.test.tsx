@@ -8,7 +8,7 @@ describe("MemberProfile Component", () => {
     id: 1,
     name: "Dr. Rafael Song",
     role: "Principal Investigator",
-    focus: "Molecular and nanoscale biosystems engineering.",
+    focus: "Micro and nanoscale bioengineering.",
     email: "rafael.song@nyu.edu",
     originCountry: "South Korea",
     biography: "Dr. Song is an Associate Professor of Mechanical and Biomedical Engineering.",
@@ -56,7 +56,7 @@ describe("MemberProfile Component", () => {
   it("renders research focus and biography", () => {
     render(<MemberProfile member={baseMember} />);
 
-    expect(screen.getByText("Molecular and nanoscale biosystems engineering.")).toBeInTheDocument();
+    expect(screen.getByText("Micro and nanoscale bioengineering.")).toBeInTheDocument();
     expect(
       screen.getByText("Dr. Song is an Associate Professor of Mechanical and Biomedical Engineering.")
     ).toBeInTheDocument();

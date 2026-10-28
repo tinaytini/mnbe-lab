@@ -14,7 +14,7 @@ export default function PeopleGrid({ allMembers }: { allMembers: Member[] }) {
                     id={slugify(m.name)}
                     className="relative flex flex-col items-center text-center p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-200 hover:-translate-y-1 transition-all duration-200 gap-4 group scroll-mt-28"
                 >
-                    <div className="w-24 h-24 rounded-full bg-linear-to-br from-brand-100 to-brand-100 flex items-center justify-center text-4xl overflow-hidden shrink-0">
+                    <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full bg-linear-to-br from-brand-100 to-brand-100 flex items-center justify-center text-5xl overflow-hidden shrink-0">
                         {m.photoUrl
                             // eslint-disable-next-line @next/next/no-img-element
                             ? <img src={m.photoUrl} alt={m.name} className="w-full h-full object-cover" />

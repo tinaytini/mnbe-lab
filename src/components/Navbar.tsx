@@ -4,30 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "./Logo";
-
-type NavLink = {
-    label: string;
-    href: string;
-    submenu?: { label: string; href: string }[];
-};
-
-const links: NavLink[] = [
-    { label: "Home", href: "/" },
-    // {
-    //     label: "Research Areas",
-    //     href: "/research",
-    //     submenu: [
-    //         { label: "Biomechanics", href: "/research/biomechanics" },
-    //         { label: "Biosensing", href: "/research/biosensing" },
-    //         { label: "Bioinspiration", href: "/research/bioinspiration" },
-    //     ]
-    // },
-    { label: "Publications & Achievements", href: "/publications" },
-    { label: "People", href: "/people" },
-    { label: "Facilities", href: "/facilities" },
-    { label: "News", href: "/news" },
-    { label: "Contact", href: "/contact" },
-];
+import { NAV_LINKS as links } from "@/lib/navigation";
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
@@ -48,7 +25,7 @@ export default function Navbar() {
 
     return (
         <header
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${solid
+            className={`fixed top-0 left-0 right-0 z-50 pt-2 sm:pt-2.5 transition-all duration-300 ${solid
                 ? "bg-white/90 backdrop-blur-md shadow-sm border-b border-slate-200/60"
                 : "bg-transparent"
                 }`}

@@ -6,13 +6,13 @@ import PublicationsList from "@/components/PublicationsList";
 
 export const metadata: Metadata = {
     title: "Publications & Achievements | MNBE Lab",
-    description: "Browse recent peer-reviewed publications and research achievements from the MNBE Lab (Molecular & Nanoscale Biosystems Engineering) at NYU Abu Dhabi.",
+    description: "Browse recent peer-reviewed publications and research achievements from the MNBE Lab (Micro and Nanoscale Bioengineering) at NYU Abu Dhabi.",
     keywords: [
         "MNBE Lab publications",
         "Rafael Song research papers",
         "NYU Abu Dhabi science papers",
-        "Biosystems engineering articles",
-        "Molecular nanotechnology publications",
+        "Bioengineering articles",
+        "Micro and nanoscale bioengineering publications",
     ],
     alternates: { canonical: "/publications" },
 };

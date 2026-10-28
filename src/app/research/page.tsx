@@ -5,7 +5,7 @@ import { desc } from "drizzle-orm";
 
 export const metadata: Metadata = {
     title: "Research Areas | YAS Lab",
-    description: "Explore the research areas of the YAS Lab: molecular nanotechnology, biosystems engineering, and drug delivery at NYU Abu Dhabi.",
+    description: "Explore the research areas of the YAS Lab: micro and nanoscale bioengineering, biosensing, and drug delivery at NYU Abu Dhabi.",
 };
 
 export const revalidate = 60;
@@ -25,7 +25,7 @@ export default async function ResearchPage() {
                     Research Areas
                 </h1>
                 <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
-                    We pursue fundamental and applied research at the frontier of nanoscale biosystems science.
+                    We pursue fundamental and applied research at the frontier of micro and nanoscale bioengineering.
                 </p>
             </section>
 

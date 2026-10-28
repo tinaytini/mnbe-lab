@@ -1,21 +1,32 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Activity, Bug, Leaf, FlaskConical } from "lucide-react";
+import { Activity, Bug, Leaf } from "lucide-react";
 import { db } from "@/db";
 import { publications as pubsTable, news as newsTable, members as membersTable, researchAreas as researchAreasTable } from "@/db/schema";
-import { asc, count, desc } from "drizzle-orm";
+import { count, desc } from "drizzle-orm";
 import NewsCarousel from "@/components/NewsCarousel";
 
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
-// Known research areas get a distinct icon; anything added later falls back to a generic one.
-const areaIcons: Record<string, React.ReactNode> = {
-  Biosensing: <Activity strokeWidth={1.5} className="w-7 h-7 text-brand-500" />,
-  Biomechanics: <Bug strokeWidth={1.5} className="w-7 h-7 text-brand-500" />,
-  Bioinspiration: <Leaf strokeWidth={1.5} className="w-7 h-7 text-brand-500" />,
-};
-const defaultAreaIcon = <FlaskConical strokeWidth={1.5} className="w-7 h-7 text-brand-500" />;
+// Static "Our Mission" cards — intentionally not driven by the admin panel.
+const missionAreas: { title: string; icon: React.ReactNode; background: string }[] = [
+  {
+    title: "Biosensing",
+    icon: <Activity strokeWidth={1.5} className="w-7 h-7 text-white" />,
+    background: "/uploads/biosensing-nanochip.jpg",
+  },
+  {
+    title: "Biomechanics",
+    icon: <Bug strokeWidth={1.5} className="w-7 h-7 text-white" />,
+    background: "/uploads/biomechanics-hero.jpg",
+  },
+  {
+    title: "Bioinspiration",
+    icon: <Leaf strokeWidth={1.5} className="w-7 h-7 text-white" />,
+    background: "/uploads/bioinspiration-nature.jpg",
+  },
+];
 
 
 
@@ -73,13 +84,7 @@ export default async function Home() {
   let recentPubs: { id: number; year: string; title: string; authors: string; journal: string; url?: string | null }[] = [];
   let recentNews: { id: number; date: string; title: string; body: string; url?: string | null; photoUrl?: string | null }[] = [];
   let statCounts = { publications: 0, news: 0, research: 0, members: 0 };
-  let missionAreas: { id: number; title: string; description: string; photoUrl: string | null }[] = [];
   try {
-    missionAreas = await db
-      .select({ id: researchAreasTable.id, title: researchAreasTable.title, description: researchAreasTable.description, photoUrl: researchAreasTable.photoUrl })
-      .from(researchAreasTable)
-      .orderBy(asc(researchAreasTable.createdAt))
-      .limit(3);
     recentPubs = await db
       .select({ id: pubsTable.id, year: pubsTable.year, title: pubsTable.title, authors: pubsTable.authors, journal: pubsTable.journal, url: pubsTable.url })
       .from(pubsTable)
@@ -132,7 +137,7 @@ export default async function Home() {
             <div className="text-left py-6 lg:py-0">
               <div className="hidden sm:inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-300/30 bg-brand-500/20 text-brand-200 text-sm font-medium mb-8 backdrop-blur-sm">
                 <span className="w-1.5 h-1.5 rounded-full bg-brand-300 animate-pulse" />
-                Advancing Nanoscale Biosystems Engineering
+                Advancing Micro and Nanoscale Bioengineering
               </div>
 
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.08] tracking-tight mb-6 mt-4">
@@ -196,8 +201,8 @@ export default async function Home() {
                 </span>
               </h2>
               <p className="text-slate-600 text-base leading-relaxed mb-5">
-                Our mission is to advance the field of molecular nanoscale biosystems
-                engineering through cutting-edge research and innovation. We strive to
+                Our mission is to advance the field of micro and nanoscale
+                bioengineering through cutting-edge research and innovation. We strive to
                 discover and develop new nanotechnologies and bioengineering methods that
                 improve human health and the sustainability of biological processes.
               </p>
@@ -220,39 +225,32 @@ export default async function Home() {
 
             {/* Right – area cards */}
             <div className="flex flex-col gap-3 sm:gap-5">
-              {missionAreas.length === 0 ? (
-                <div className="text-center py-10 text-slate-400 text-sm">
-                  No research areas yet. <Link href="/admin" className="text-brand-500 underline">Add via admin →</Link>
-                </div>
-              ) : (
-                missionAreas.map((area) => (
-                  <div
-                    key={area.id}
-                    className="group relative overflow-hidden bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-200 transition-all duration-300"
-                  >
-                    {/* Subtle hover gradient background */}
-                    <div className="absolute inset-0 bg-linear-to-r from-brand-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+              {missionAreas.map((area) => (
+                <div
+                  key={area.title}
+                  className="group relative overflow-hidden min-h-24 sm:min-h-28 p-4 sm:p-6 rounded-2xl bg-linear-to-br from-brand-700 to-brand-500 shadow-sm hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-0.5 transition-all duration-300 flex items-center"
+                >
+                  {/* Background photo */}
+                  <img
+                    src={area.background}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover scale-100 group-hover:scale-110 transition-transform duration-700 ease-out"
+                  />
+                  {/* Brand-violet overlay keeps the title readable; lightens on hover */}
+                  <div className="absolute inset-0 bg-linear-to-r from-brand-900/90 via-brand-800/70 to-brand-600/30 group-hover:from-brand-900/80 group-hover:via-brand-800/55 group-hover:to-brand-600/15 transition-colors duration-500 pointer-events-none" />
 
-                    <div className="relative z-10 flex gap-4 sm:gap-5 items-center sm:items-start">
-                      <div className="shrink-0 w-11 h-11 sm:w-14 sm:h-14 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden text-2xl sm:text-3xl group-hover:bg-white group-hover:border-brand-100 group-hover:shadow-sm transition-all duration-300 group-hover:-translate-y-1">
-                        {area.photoUrl ? (
-                          <img src={area.photoUrl} alt={area.title} className="w-full h-full object-cover" />
-                        ) : (
-                          areaIcons[area.title] ?? defaultAreaIcon
-                        )}
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-base font-semibold text-slate-900 mb-0 sm:mb-2 group-hover:text-brand-600 transition-colors">
-                          {area.title}
-                        </h3>
-                        <p className="hidden sm:block text-sm text-slate-500 leading-relaxed">
-                          {area.description}
-                        </p>
-                      </div>
+                  <div className="relative z-10 flex gap-4 sm:gap-5 items-center">
+                    <div className="shrink-0 w-11 h-11 sm:w-14 sm:h-14 rounded-2xl bg-white/15 border border-white/25 backdrop-blur-md flex items-center justify-center text-2xl sm:text-3xl group-hover:bg-white/25 transition-all duration-300 group-hover:-translate-y-1">
+                      {area.icon}
                     </div>
+                    <h3 className="text-lg sm:text-xl font-semibold text-white tracking-tight drop-shadow-sm">
+                      {area.title}
+                    </h3>
                   </div>
-                ))
-              )}
+                </div>
+              ))}
             </div>
           </div>
         </div>

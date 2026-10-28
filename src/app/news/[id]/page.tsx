@@ -124,12 +124,15 @@ export default async function NewsDetailPage({ params }: Props) {
 
                     {/* Featured Image */}
                     {item.photoUrl && (
-                        <div className="w-full h-72 sm:h-[420px] rounded-2xl overflow-hidden mb-8 border border-slate-100 bg-slate-100 shadow-inner">
+                        <div className="relative w-full flex justify-center rounded-2xl overflow-hidden mb-8 border border-slate-100 bg-slate-100 shadow-inner">
+                            {/* Blurred copy fills the sides around the full, uncropped image */}
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={item.photoUrl} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-60" />
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                                 src={item.photoUrl}
                                 alt={item.title}
-                                className="w-full h-full object-cover"
+                                className="relative block w-auto max-w-full h-auto max-h-[min(75vh,720px)]"
                             />
                         </div>
                     )}

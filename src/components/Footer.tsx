@@ -1,27 +1,30 @@
 import Link from "next/link";
 import Logo from "./Logo";
-
-const navLinks = [
-    { label: "Home", href: "/" },
-    { label: "Research", href: "/research" },
-    { label: "People", href: "/people" },
-    { label: "Publications", href: "/publications" },
-    { label: "Facilities", href: "/facilities" },
-    { label: "News", href: "/news" },
-    { label: "Contact", href: "/contact" },
-];
+import { NAV_LINKS as navLinks } from "@/lib/navigation";
 
 export default function Footer() {
     return (
-        <footer className="bg-brand-900 text-white">
+        <footer className="relative overflow-hidden bg-linear-to-br from-slate-950 via-brand-950 to-slate-900 text-white border-t border-brand-800/40">
+            {/* Subtle atmospheric brand lighting & grid matching home page */}
+            <div
+                className="absolute inset-0 opacity-[0.03] pointer-events-none"
+                style={{
+                    backgroundImage:
+                        "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
+                    backgroundSize: "60px 60px",
+                }}
+            />
+            <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-brand-500/15 blur-[100px] pointer-events-none translate-x-1/3 -translate-y-1/3" />
+            <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-brand-400/10 blur-[90px] pointer-events-none -translate-x-1/3 translate-y-1/3" />
+
             {/* ── Top row ───────────────────────────────────────── */}
-            <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+            <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-12">
                 <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-10">
                     {/* Logo + tagline */}
                     <div className="flex flex-col items-center lg:items-start gap-3">
                         <Logo solid={false} />
-                        <p className="text-sm text-brand-200 max-w-xs text-center lg:text-left leading-relaxed">
-                            Molecular &amp; Nanoscale Biosystems Engineering Laboratory
+                        <p className="text-sm text-brand-200/90 max-w-xs text-center lg:text-left leading-relaxed">
+                            Micro and Nanoscale Bioengineering Laboratory
                         </p>
                     </div>
 
@@ -31,7 +34,7 @@ export default function Footer() {
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className="text-sm text-brand-200 hover:text-white transition-colors"
+                                className="text-sm text-brand-200/80 hover:text-white transition-colors"
                             >
                                 {link.label}
                             </Link>
@@ -43,20 +46,20 @@ export default function Footer() {
                         <img
                             src="/images/nyuad-logo-white.png"
                             alt="NYU Abu Dhabi"
-                            className="h-12 w-auto"
+                            className="h-12 w-auto opacity-95 hover:opacity-100 transition-opacity"
                         />
                     </div>
                 </div>
             </div>
 
             {/* ── Divider ───────────────────────────────────────── */}
-            <div className="border-t border-brand-700" />
+            <div className="relative z-10 border-t border-brand-800/60" />
 
             {/* ── Bottom row ─────────────────────────────────────── */}
-            <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                 {/* Copyright */}
-                <p className="text-xs text-brand-300">
-                    © {new Date().getFullYear()} MNBE Lab — Molecular &amp; Nanoscale Biosystems Engineering. All rights reserved.
+                <p className="text-xs text-brand-300/80">
+                    © {new Date().getFullYear()} MNBE Lab — Micro and Nanoscale Bioengineering. All rights reserved.
                 </p>
 
                 {/* Social icons */}

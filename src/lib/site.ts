@@ -2,9 +2,9 @@
 
 export const SITE_URL = "https://www.mnbe-lab.ae";
 export const SITE_NAME = "MNBE Lab";
-export const SITE_FULL_NAME = "Molecular & Nanoscale Biosystems Engineering Laboratory";
+export const SITE_FULL_NAME = "Micro and Nanoscale Bioengineering Laboratory";
 export const SITE_DESCRIPTION =
-    "The MNBE Lab at NYU Abu Dhabi pioneers research at the intersection of molecular nanotechnology, biosystems engineering, and biomedical innovation.";
+    "The MNBE (Micro and Nanoscale Bioengineering) Lab at NYU Abu Dhabi investigates biological processes at the micro- and nanoscale, at the interface of biology, physics, and engineering.";
 
 export const UNIVERSITY = {
     name: "New York University Abu Dhabi",

@@ -5,7 +5,7 @@ describe("site utils and constants", () => {
   it("defines standard site metadata constants", () => {
     expect(SITE_URL).toBe("https://www.mnbe-lab.ae");
     expect(SITE_NAME).toBe("MNBE Lab");
-    expect(SITE_FULL_NAME).toContain("Molecular & Nanoscale Biosystems Engineering");
+    expect(SITE_FULL_NAME).toContain("Micro and Nanoscale Bioengineering");
   });
 
   describe("absoluteUrl", () => {

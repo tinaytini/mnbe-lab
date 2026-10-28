@@ -6,7 +6,7 @@ import { desc } from "drizzle-orm";
 
 export const metadata: Metadata = {
     title: "News | YAS Lab",
-    description: "Latest updates, awards, and highlights from the YAS Lab (Molecular & Nanoscale Biosystems Engineering) research community at NYU Abu Dhabi.",
+    description: "Latest updates, awards, and highlights from the YAS Lab (Micro and Nanoscale Bioengineering) research community at NYU Abu Dhabi.",
 };
 
 export const revalidate = 60;
@@ -53,9 +53,12 @@ export default async function NewsPage() {
                                 className="group flex flex-col gap-4 p-5 rounded-2xl bg-white border border-slate-200 shadow-sm transition-all duration-200 hover:border-brand-300 hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
                             >
                                 {item.photoUrl && (
-                                    <div className="w-full h-44 rounded-xl overflow-hidden border border-slate-100 bg-slate-50">
+                                    <div className="relative w-full h-56 rounded-xl overflow-hidden border border-slate-100 bg-slate-50">
+                                        {/* Blurred copy fills the letterbox around the full, uncropped image */}
                                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                                        <img src={item.photoUrl} alt={item.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                                        <img src={item.photoUrl} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover scale-110 blur-xl opacity-60" />
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img src={item.photoUrl} alt={item.title} className="relative w-full h-full object-contain transition-transform duration-300 group-hover:scale-[1.02]" />
                                     </div>
                                 )}
                                 <div className="flex flex-col flex-1">

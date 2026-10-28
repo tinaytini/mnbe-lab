@@ -50,11 +50,14 @@ export default function NewsCarousel({ items }: { items: NewsItemData[] }) {
                     >
                         {item.photoUrl && (
                             <div className="flex-shrink-0 w-full h-48 rounded-xl overflow-hidden bg-white/5 relative shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/5 group-hover:border-brand-500/30 transition-colors duration-300">
+                                {/* Blurred copy fills the letterbox around the full, uncropped image */}
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src={item.photoUrl} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover scale-110 blur-xl opacity-50" />
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
                                     src={item.photoUrl}
                                     alt={item.title}
-                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                    className="relative w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
                                 />
                             </div>
                         )}

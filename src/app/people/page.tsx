@@ -5,13 +5,13 @@ import PeopleHero from "./PeopleHero";
 
 export const metadata: Metadata = {
     title: "People | MNBE Lab — NYU Abu Dhabi",
-    description: "Meet the researchers, postdocs, and students of the MNBE Lab (Molecular & Nanoscale Biosystems Engineering) at NYU Abu Dhabi.",
+    description: "Meet the researchers, postdocs, and students of the MNBE Lab (Micro and Nanoscale Bioengineering) at NYU Abu Dhabi.",
     keywords: [
         "MNBE Lab team",
         "NYU Abu Dhabi researchers",
         "Rafael Song lab members",
-        "Biosystems engineering researchers",
-        "Molecular nanotechnology team",
+        "Bioengineering researchers",
+        "Micro and nanoscale bioengineering team",
     ],
     alternates: { canonical: "/people" },
     openGraph: {
