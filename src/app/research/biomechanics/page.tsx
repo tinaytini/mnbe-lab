@@ -1,34 +1,40 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Database, Zap } from "lucide-react";
+import { getResearchPageContent, BiomechanicsData } from "@/lib/research-data";
 
 export const metadata: Metadata = {
     title: "Biomechanics | YAS Lab",
     description: "The YAS Lab's biomechanics research using C. elegans as a model organism for neuromuscular disease and genetic research.",
 };
 
-export default function BiomechanicsPage() {
+export const revalidate = 60;
+
+export default async function BiomechanicsPage() {
+    const data = await getResearchPageContent<BiomechanicsData>("biomechanics");
+
     return (
         <main className="bg-slate-50 pt-20">
             {/* Hero Section */}
-            <section className="relative h-[550px] flex items-center justify-center bg-slate-900 overflow-hidden">
+            <section className="relative h-[550px] flex items-center justify-center bg-brand-900 overflow-hidden">
                 <Image 
-                    src="/uploads/biomechanics-hero.png" 
-                    alt="Biomechanics"
+                    src={data.heroImage || "/uploads/biomechanics-hero.png"} 
+                    alt={data.heroTitle}
                     fill 
                     className="object-cover opacity-60"
                     priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900/80" />
+                <div className="absolute inset-0 bg-linear-to-b from-brand-950/40 via-brand-900/40 to-brand-900/90" />
+                <div className="absolute top-0 right-0 w-150 h-150 rounded-full bg-brand-500/20 blur-[120px] pointer-events-none translate-x-1/3 -translate-y-1/4" />
                 <div className="relative z-10 text-center px-6 max-w-4xl">
-                    <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-400/30 bg-brand-500/10 text-brand-300 text-sm font-medium mb-6 backdrop-blur-md">
+                    <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-300/30 bg-brand-500/20 text-brand-200 text-sm font-medium mb-6 backdrop-blur-md">
                         Research Area
                     </span>
                     <h1 className="text-5xl sm:text-7xl font-bold text-white tracking-tight mb-6">
-                        Biomechanics
+                        {data.heroTitle}
                     </h1>
-                    <p className="text-xl text-slate-200 max-w-2xl mx-auto leading-relaxed font-light">
-                        Advanced microfluidic platforms for mechanical analysis of biological systems.
+                    <p className="text-xl text-brand-100/90 max-w-2xl mx-auto leading-relaxed font-light">
+                        {data.heroSubtitle}
                     </p>
                 </div>
             </section>
@@ -43,44 +49,48 @@ export default function BiomechanicsPage() {
                             <Database className="w-5 h-5" />
                         </div>
                         <h2 className="text-2xl font-bold text-slate-900 leading-tight">
-                            Micropillar based high throughput drug screening using C. elegans
+                            {data.project1Title}
                         </h2>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                         <div className="rounded-2xl aspect-[4/3] relative overflow-hidden group">
                             <Image 
-                                src="/uploads/High-Throughput-Drug-Screening-1.jpg" 
-                                alt="High Throughput Drug Screening" 
+                                src={data.project1Image1 || "/uploads/High-Throughput-Drug-Screening-1.jpg"} 
+                                alt={data.project1Title} 
                                 fill 
                                 className="object-contain"
                             />
                         </div>
                         <div className="rounded-2xl aspect-[4/3] relative overflow-hidden group">
                             <Image 
-                                src="/uploads/Diabetes-text-1.jpg" 
-                                alt="High-resolution microscopy" 
+                                src={data.project1Image2 || "/uploads/Diabetes-text-1.jpg"} 
+                                alt={data.project1Title} 
                                 fill 
                                 className="object-contain"
                             />
                         </div>
                     </div>
 
-                    <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex gap-4 items-start mb-8">
-                        <div className="w-1.5 h-1.5 rounded-full bg-brand-500 mt-2 shrink-0" />
-                        <p className="text-slate-600 text-base leading-relaxed italic">
-                            &quot;The method can be extended to study other muscle impacting disease like ALS, Parkinson disease etc.&quot;
-                        </p>
-                    </div>
+                    {data.project1Quote && (
+                        <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex gap-4 items-start mb-8">
+                            <div className="w-1.5 h-1.5 rounded-full bg-brand-500 mt-2 shrink-0" />
+                            <p className="text-slate-600 text-base leading-relaxed italic">
+                                &quot;{data.project1Quote}&quot;
+                            </p>
+                        </div>
+                    )}
                     
-                    <div className="rounded-2xl aspect-video relative overflow-hidden group">
-                        <Image 
-                            src="/uploads/Neuromuscular-Disease-1.jpg" 
-                            alt="Neuromuscular Disease Study" 
-                            fill 
-                            className="object-contain"
-                        />
-                    </div>
+                    {data.project1WideImage && (
+                        <div className="rounded-2xl aspect-video relative overflow-hidden group">
+                            <Image 
+                                src={data.project1WideImage} 
+                                alt={data.project1Title} 
+                                fill 
+                                className="object-contain"
+                            />
+                        </div>
+                    )}
                 </section>
 
                 {/* Section 2: Single Worm Dispensing */}
@@ -90,31 +100,31 @@ export default function BiomechanicsPage() {
                             <Zap className="w-5 h-5" />
                         </div>
                         <h2 className="text-2xl font-bold text-slate-900 leading-tight">
-                            Dispensing of single C. elegan worms using microfluidics and pressure boundary condition
+                            {data.project2Title}
                         </h2>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="rounded-2xl aspect-square relative overflow-hidden group">
                             <Image 
-                                src="/uploads/Dispensing-1.jpg" 
-                                alt="Microfluidic dispensing system" 
+                                src={data.project2Image1 || "/uploads/Dispensing-1.jpg"} 
+                                alt={data.project2Title} 
                                 fill 
                                 className="object-contain"
                             />
                         </div>
                         <div className="rounded-2xl aspect-square relative overflow-hidden group">
                             <Image 
-                                src="/uploads/DTIP-1.jpg" 
-                                alt="SEM image of dispensing tip" 
+                                src={data.project2Image2 || "/uploads/DTIP-1.jpg"} 
+                                alt={data.project2Title} 
                                 fill 
                                 className="object-contain"
                             />
                         </div>
                         <div className="rounded-2xl aspect-square relative overflow-hidden group">
                             <Image 
-                                src="/uploads/Comsol-dtip-1.jpg" 
-                                alt="Comsol simulation" 
+                                src={data.project2Image3 || "/uploads/Comsol-dtip-1.jpg"} 
+                                alt={data.project2Title} 
                                 fill 
                                 className="object-contain"
                             />
@@ -123,11 +133,11 @@ export default function BiomechanicsPage() {
                 </section>
 
                 {/* Footer style engagement */}
-                <section className="bg-slate-900 rounded-[2.5rem] p-12 text-center relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl -mr-32 -mt-32" />
-                    <h3 className="text-2xl font-bold text-white mb-4 relative z-10">Biomechanics Research</h3>
-                    <p className="text-slate-400 max-w-xl mx-auto leading-relaxed relative z-10">
-                        Our work integrates advanced microfluidics with biological modeling to create precise analytical tools for disease study.
+                <section className="bg-linear-to-br from-slate-900 via-brand-900 to-slate-900 rounded-[2.5rem] p-12 text-center relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/20 rounded-full blur-3xl -mr-32 -mt-32" />
+                    <h3 className="text-2xl font-bold text-white mb-4 relative z-10">{data.closingTitle}</h3>
+                    <p className="text-brand-100/80 max-w-xl mx-auto leading-relaxed relative z-10">
+                        {data.closingText}
                     </p>
                 </section>
             </div>

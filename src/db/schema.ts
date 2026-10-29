@@ -65,3 +65,13 @@ export const images = pgTable("images", {
     data: text("data").notNull(),
     createdAt: timestamp("created_at").defaultNow(),
 });
+
+export const researchPages = pgTable("research_pages", {
+    id: serial("id").primaryKey(),
+    slug: varchar("slug", { length: 100 }).notNull().unique(),
+    title: varchar("title", { length: 255 }).notNull(),
+    heroImage: varchar("hero_image", { length: 512 }),
+    heroSubtitle: text("hero_subtitle"),
+    data: text("data").notNull(), // JSON string storing structured sections, stats, images and paragraphs
+    updatedAt: timestamp("updated_at").defaultNow(),
+});

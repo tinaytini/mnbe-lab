@@ -642,7 +642,414 @@ function PeopleTab() {
 
 // ─── Research Areas Tab ───────────────────────────────────────────────────────
 
+// ─── Research Pages Editors & Overview ──────────────────────────────────────────
+
+function ImageField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+    const [uploading, setUploading] = useState(false);
+    const fileRef = useRef<HTMLInputElement>(null);
+
+    const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setUploading(true);
+        try {
+            const fd = new FormData();
+            fd.append("file", file);
+            const res = await fetch("/api/upload", { method: "POST", body: fd });
+            const data = await res.json();
+            if (data.url) onChange(data.url);
+            else alert(data.error ?? "Upload failed");
+        } catch {
+            alert("Upload failed.");
+        } finally {
+            setUploading(false);
+        }
+    };
+
+    return (
+        <div className="flex flex-col gap-1.5">
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-widest">{label}</span>
+            <div className="flex items-center gap-3 bg-white p-3 rounded-xl border border-slate-200">
+                <div className="w-16 h-16 rounded-lg bg-slate-50 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center">
+                    {value ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={value} alt="Preview" className="w-full h-full object-cover" />
+                    ) : (
+                        <span className="text-2xl text-slate-300">🖼️</span>
+                    )}
+                </div>
+                <div className="flex-1 flex flex-col gap-2 min-w-0">
+                    <input
+                        type="text"
+                        value={value}
+                        onChange={(e) => onChange(e.target.value)}
+                        placeholder="/uploads/photo.jpg or upload..."
+                        className="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
+                    <div>
+                        <input type="file" ref={fileRef} className="hidden" accept="image/*" onChange={handleUpload} />
+                        <Btn variant="secondary" size="sm" onClick={() => fileRef.current?.click()} disabled={uploading}>
+                            {uploading ? "Uploading..." : "Upload New Image"}
+                        </Btn>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function BiosensingEditor() {
+    const [data, setData] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [toast, setToast] = useState<string | null>(null);
+
+    useEffect(() => {
+        fetch("/api/research-pages/biosensing")
+            .then((r) => r.json())
+            .then((d) => setData(d))
+            .catch(() => alert("Failed to load biosensing data"))
+            .finally(() => setLoading(false));
+    }, []);
+
+    const save = async () => {
+        setSaving(true);
+        setToast(null);
+        try {
+            const res = await fetch("/api/research-pages/biosensing", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+            const resData = await res.json();
+            if (res.ok) {
+                setToast("Changes saved successfully! Page is updated.");
+                setTimeout(() => setToast(null), 4000);
+            } else {
+                alert(resData.error ?? "Failed to save.");
+            }
+        } catch {
+            alert("Failed to save changes.");
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    if (loading || !data) return <div className="py-12 text-center text-slate-400 text-sm">Loading Biosensing editor…</div>;
+
+    return (
+        <div className="flex flex-col gap-6">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+                <div>
+                    <h3 className="text-base font-bold text-slate-800">Edit Biosensing Page</h3>
+                    <p className="text-xs text-slate-500">Changes apply to /research/biosensing</p>
+                </div>
+                <div className="flex items-center gap-3">
+                    <a href="/research/biosensing" target="_blank" rel="noreferrer" className="text-xs font-semibold text-brand-600 hover:text-brand-700 underline">
+                        View Live Page ↗
+                    </a>
+                    <Btn onClick={save} disabled={saving}>{saving ? "Saving…" : "Save Page Changes"}</Btn>
+                </div>
+            </div>
+
+            {toast && <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-xl">{toast}</div>}
+
+            {/* Hero */}
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col gap-4">
+                <h4 className="text-sm font-bold text-slate-800">1. Hero Banner</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <Input label="Page Title" value={data.heroTitle} onChange={(v) => setData({ ...data, heroTitle: v })} />
+                    <Input label="Subtitle" value={data.heroSubtitle} onChange={(v) => setData({ ...data, heroSubtitle: v })} />
+                </div>
+                <ImageField label="Hero Background Photo" value={data.heroImage} onChange={(v) => setData({ ...data, heroImage: v })} />
+            </div>
+
+            {/* Overview Section */}
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col gap-4">
+                <h4 className="text-sm font-bold text-slate-800">2. Overview & Paragraphs</h4>
+                <Input label="Section Heading" value={data.overviewHeading} onChange={(v) => setData({ ...data, overviewHeading: v })} />
+                <Textarea label="Paragraph 1" rows={3} value={data.overviewP1} onChange={(v) => setData({ ...data, overviewP1: v })} />
+                <Textarea label="Paragraph 2" rows={3} value={data.overviewP2} onChange={(v) => setData({ ...data, overviewP2: v })} />
+            </div>
+
+            {/* Nanochip & Stats */}
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col gap-4">
+                <h4 className="text-sm font-bold text-slate-800">3. Visual Showcase & Stats</h4>
+                <ImageField label="Nanochip / Main Visual Image" value={data.nanochipImage} onChange={(v) => setData({ ...data, nanochipImage: v })} />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="p-4 bg-white rounded-xl border border-slate-200 flex flex-col gap-3">
+                        <span className="text-xs font-bold text-slate-600">Metric 1</span>
+                        <Input label="Value" value={data.stat1Value} onChange={(v) => setData({ ...data, stat1Value: v })} />
+                        <Input label="Label" value={data.stat1Label} onChange={(v) => setData({ ...data, stat1Label: v })} />
+                    </div>
+                    <div className="p-4 bg-white rounded-xl border border-slate-200 flex flex-col gap-3">
+                        <span className="text-xs font-bold text-slate-600">Metric 2</span>
+                        <Input label="Value" value={data.stat2Value} onChange={(v) => setData({ ...data, stat2Value: v })} />
+                        <Input label="Label" value={data.stat2Label} onChange={(v) => setData({ ...data, stat2Label: v })} />
+                    </div>
+                </div>
+            </div>
+
+            {/* Feature Cards */}
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col gap-4">
+                <h4 className="text-sm font-bold text-slate-800">4. Key Highlights (3 Cards)</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="p-4 bg-white rounded-xl border border-slate-200 flex flex-col gap-3">
+                        <span className="text-xs font-bold text-slate-600">Card 1 (Sensor Surface)</span>
+                        <Input label="Title" value={data.feature1Title} onChange={(v) => setData({ ...data, feature1Title: v })} />
+                        <Textarea label="Description" rows={3} value={data.feature1Desc} onChange={(v) => setData({ ...data, feature1Desc: v })} />
+                    </div>
+                    <div className="p-4 bg-white rounded-xl border border-slate-200 flex flex-col gap-3">
+                        <span className="text-xs font-bold text-slate-600">Card 2 (Diagnostics)</span>
+                        <Input label="Title" value={data.feature2Title} onChange={(v) => setData({ ...data, feature2Title: v })} />
+                        <Textarea label="Description" rows={3} value={data.feature2Desc} onChange={(v) => setData({ ...data, feature2Desc: v })} />
+                    </div>
+                    <div className="p-4 bg-white rounded-xl border border-slate-200 flex flex-col gap-3">
+                        <span className="text-xs font-bold text-slate-600">Card 3 (Integration)</span>
+                        <Input label="Title" value={data.feature3Title} onChange={(v) => setData({ ...data, feature3Title: v })} />
+                        <Textarea label="Description" rows={3} value={data.feature3Desc} onChange={(v) => setData({ ...data, feature3Desc: v })} />
+                    </div>
+                </div>
+            </div>
+
+            <div className="flex justify-end pt-2">
+                <Btn onClick={save} disabled={saving}>{saving ? "Saving…" : "Save Page Changes"}</Btn>
+            </div>
+        </div>
+    );
+}
+
+function BiomechanicsEditor() {
+    const [data, setData] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [toast, setToast] = useState<string | null>(null);
+
+    useEffect(() => {
+        fetch("/api/research-pages/biomechanics")
+            .then((r) => r.json())
+            .then((d) => setData(d))
+            .catch(() => alert("Failed to load biomechanics data"))
+            .finally(() => setLoading(false));
+    }, []);
+
+    const save = async () => {
+        setSaving(true);
+        setToast(null);
+        try {
+            const res = await fetch("/api/research-pages/biomechanics", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+            const resData = await res.json();
+            if (res.ok) {
+                setToast("Changes saved successfully! Page is updated.");
+                setTimeout(() => setToast(null), 4000);
+            } else {
+                alert(resData.error ?? "Failed to save.");
+            }
+        } catch {
+            alert("Failed to save changes.");
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    if (loading || !data) return <div className="py-12 text-center text-slate-400 text-sm">Loading Biomechanics editor…</div>;
+
+    return (
+        <div className="flex flex-col gap-6">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+                <div>
+                    <h3 className="text-base font-bold text-slate-800">Edit Biomechanics Page</h3>
+                    <p className="text-xs text-slate-500">Changes apply to /research/biomechanics</p>
+                </div>
+                <div className="flex items-center gap-3">
+                    <a href="/research/biomechanics" target="_blank" rel="noreferrer" className="text-xs font-semibold text-brand-600 hover:text-brand-700 underline">
+                        View Live Page ↗
+                    </a>
+                    <Btn onClick={save} disabled={saving}>{saving ? "Saving…" : "Save Page Changes"}</Btn>
+                </div>
+            </div>
+
+            {toast && <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-xl">{toast}</div>}
+
+            {/* Hero */}
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col gap-4">
+                <h4 className="text-sm font-bold text-slate-800">1. Hero Banner</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <Input label="Page Title" value={data.heroTitle} onChange={(v) => setData({ ...data, heroTitle: v })} />
+                    <Input label="Subtitle" value={data.heroSubtitle} onChange={(v) => setData({ ...data, heroSubtitle: v })} />
+                </div>
+                <ImageField label="Hero Background Photo" value={data.heroImage} onChange={(v) => setData({ ...data, heroImage: v })} />
+            </div>
+
+            {/* Project 1 */}
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col gap-4">
+                <h4 className="text-sm font-bold text-slate-800">2. Project 1: Micropillar Drug Screening</h4>
+                <Input label="Project Title" value={data.project1Title} onChange={(v) => setData({ ...data, project1Title: v })} />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <ImageField label="Image 1 (Drug Screening)" value={data.project1Image1} onChange={(v) => setData({ ...data, project1Image1: v })} />
+                    <ImageField label="Image 2 (Microscopy / Diabetes)" value={data.project1Image2} onChange={(v) => setData({ ...data, project1Image2: v })} />
+                </div>
+                <Textarea label="Callout Quote" rows={2} value={data.project1Quote} onChange={(v) => setData({ ...data, project1Quote: v })} />
+                <ImageField label="Wide Video / SEM Study Image" value={data.project1WideImage} onChange={(v) => setData({ ...data, project1WideImage: v })} />
+            </div>
+
+            {/* Project 2 */}
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col gap-4">
+                <h4 className="text-sm font-bold text-slate-800">3. Project 2: Worm Dispensing System</h4>
+                <Input label="Project Title" value={data.project2Title} onChange={(v) => setData({ ...data, project2Title: v })} />
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <ImageField label="Dispensing System" value={data.project2Image1} onChange={(v) => setData({ ...data, project2Image1: v })} />
+                    <ImageField label="Dispensing Tip (SEM)" value={data.project2Image2} onChange={(v) => setData({ ...data, project2Image2: v })} />
+                    <ImageField label="Simulation" value={data.project2Image3} onChange={(v) => setData({ ...data, project2Image3: v })} />
+                </div>
+            </div>
+
+            {/* Closing */}
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col gap-4">
+                <h4 className="text-sm font-bold text-slate-800">4. Bottom Callout Banner</h4>
+                <Input label="Closing Title" value={data.closingTitle} onChange={(v) => setData({ ...data, closingTitle: v })} />
+                <Textarea label="Closing Description" rows={2} value={data.closingText} onChange={(v) => setData({ ...data, closingText: v })} />
+            </div>
+
+            <div className="flex justify-end pt-2">
+                <Btn onClick={save} disabled={saving}>{saving ? "Saving…" : "Save Page Changes"}</Btn>
+            </div>
+        </div>
+    );
+}
+
+function BioinspirationEditor() {
+    const [data, setData] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [toast, setToast] = useState<string | null>(null);
+
+    useEffect(() => {
+        fetch("/api/research-pages/bioinspiration")
+            .then((r) => r.json())
+            .then((d) => setData(d))
+            .catch(() => alert("Failed to load bioinspiration data"))
+            .finally(() => setLoading(false));
+    }, []);
+
+    const save = async () => {
+        setSaving(true);
+        setToast(null);
+        try {
+            const res = await fetch("/api/research-pages/bioinspiration", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+            const resData = await res.json();
+            if (res.ok) {
+                setToast("Changes saved successfully! Page is updated.");
+                setTimeout(() => setToast(null), 4000);
+            } else {
+                alert(resData.error ?? "Failed to save.");
+            }
+        } catch {
+            alert("Failed to save changes.");
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    if (loading || !data) return <div className="py-12 text-center text-slate-400 text-sm">Loading Bioinspiration editor…</div>;
+
+    return (
+        <div className="flex flex-col gap-6">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+                <div>
+                    <h3 className="text-base font-bold text-slate-800">Edit Bioinspiration Page</h3>
+                    <p className="text-xs text-slate-500">Changes apply to /research/bioinspiration</p>
+                </div>
+                <div className="flex items-center gap-3">
+                    <a href="/research/bioinspiration" target="_blank" rel="noreferrer" className="text-xs font-semibold text-brand-600 hover:text-brand-700 underline">
+                        View Live Page ↗
+                    </a>
+                    <Btn onClick={save} disabled={saving}>{saving ? "Saving…" : "Save Page Changes"}</Btn>
+                </div>
+            </div>
+
+            {toast && <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-xl">{toast}</div>}
+
+            {/* Hero */}
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col gap-4">
+                <h4 className="text-sm font-bold text-slate-800">1. Hero Banner</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <Input label="Page Title" value={data.heroTitle} onChange={(v) => setData({ ...data, heroTitle: v })} />
+                    <Input label="Subtitle" value={data.heroSubtitle} onChange={(v) => setData({ ...data, heroSubtitle: v })} />
+                </div>
+                <ImageField label="Hero Background Photo" value={data.heroImage} onChange={(v) => setData({ ...data, heroImage: v })} />
+            </div>
+
+            {/* Blueprint */}
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col gap-4">
+                <h4 className="text-sm font-bold text-slate-800">2. Nature as a Blueprint</h4>
+                <Input label="Section Title" value={data.blueprintTitle} onChange={(v) => setData({ ...data, blueprintTitle: v })} />
+                <Textarea label="Paragraph 1" rows={3} value={data.blueprintP1} onChange={(v) => setData({ ...data, blueprintP1: v })} />
+                <Textarea label="Paragraph 2" rows={3} value={data.blueprintP2} onChange={(v) => setData({ ...data, blueprintP2: v })} />
+                <Textarea label="Philosophy Quote" rows={2} value={data.blueprintQuote} onChange={(v) => setData({ ...data, blueprintQuote: v })} />
+            </div>
+
+            {/* Focus Pillars */}
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col gap-4">
+                <h4 className="text-sm font-bold text-slate-800">3. Focus Areas (3 Pillars)</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="p-4 bg-white rounded-xl border border-slate-200 flex flex-col gap-3">
+                        <span className="text-xs font-bold text-slate-600">Pillar 1</span>
+                        <Input label="Title" value={data.focus1Title} onChange={(v) => setData({ ...data, focus1Title: v })} />
+                        <Textarea label="Description" rows={3} value={data.focus1Desc} onChange={(v) => setData({ ...data, focus1Desc: v })} />
+                    </div>
+                    <div className="p-4 bg-white rounded-xl border border-slate-200 flex flex-col gap-3">
+                        <span className="text-xs font-bold text-slate-600">Pillar 2</span>
+                        <Input label="Title" value={data.focus2Title} onChange={(v) => setData({ ...data, focus2Title: v })} />
+                        <Textarea label="Description" rows={3} value={data.focus2Desc} onChange={(v) => setData({ ...data, focus2Desc: v })} />
+                    </div>
+                    <div className="p-4 bg-white rounded-xl border border-slate-200 flex flex-col gap-3">
+                        <span className="text-xs font-bold text-slate-600">Pillar 3</span>
+                        <Input label="Title" value={data.focus3Title} onChange={(v) => setData({ ...data, focus3Title: v })} />
+                        <Textarea label="Description" rows={3} value={data.focus3Desc} onChange={(v) => setData({ ...data, focus3Desc: v })} />
+                    </div>
+                </div>
+            </div>
+
+            {/* Technology Showcase */}
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col gap-4">
+                <h4 className="text-sm font-bold text-slate-800">4. Technology Showcase & Metrics</h4>
+                <Input label="Showcase Title" value={data.showcaseTitle} onChange={(v) => setData({ ...data, showcaseTitle: v })} />
+                <Textarea label="Showcase Description" rows={3} value={data.showcaseText} onChange={(v) => setData({ ...data, showcaseText: v })} />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="p-4 bg-white rounded-xl border border-slate-200 flex flex-col gap-3">
+                        <span className="text-xs font-bold text-slate-600">Metric 1</span>
+                        <Input label="Value" value={data.stat1Value} onChange={(v) => setData({ ...data, stat1Value: v })} />
+                        <Input label="Label" value={data.stat1Label} onChange={(v) => setData({ ...data, stat1Label: v })} />
+                    </div>
+                    <div className="p-4 bg-white rounded-xl border border-slate-200 flex flex-col gap-3">
+                        <span className="text-xs font-bold text-slate-600">Metric 2</span>
+                        <Input label="Value" value={data.stat2Value} onChange={(v) => setData({ ...data, stat2Value: v })} />
+                        <Input label="Label" value={data.stat2Label} onChange={(v) => setData({ ...data, stat2Label: v })} />
+                    </div>
+                </div>
+                <ImageField label="Nature Showcase Image" value={data.showcaseImage} onChange={(v) => setData({ ...data, showcaseImage: v })} />
+            </div>
+
+            <div className="flex justify-end pt-2">
+                <Btn onClick={save} disabled={saving}>{saving ? "Saving…" : "Save Page Changes"}</Btn>
+            </div>
+        </div>
+    );
+}
+
 function ResearchTab() {
+    type SubView = "overview" | "biosensing" | "biomechanics" | "bioinspiration";
+    const [view, setView] = useState<SubView>("overview");
+
     const [items, setItems] = useState<ResearchArea[]>([]);
     const [loading, setLoading] = useState(true);
     const [editing, setEditing] = useState<ResearchArea | null>(null);
@@ -707,69 +1114,135 @@ function ResearchTab() {
 
     return (
         <div className="flex flex-col gap-6">
-            <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-slate-800">Research Areas <Badge color="green">{items.length}</Badge></h2>
-                <div className="flex gap-2">
-                    <Btn variant="secondary" size="sm" onClick={load}>↻ Refresh</Btn>
-                    {!showForm && <Btn onClick={() => { setAdding(true); setEditing(null); }}>+ Add Area</Btn>}
+            {/* Sub-view navigation switcher */}
+            <div className="flex flex-wrap items-center justify-between gap-3 p-1.5 bg-slate-100 rounded-2xl border border-slate-200">
+                <div className="flex flex-wrap items-center gap-1.5">
+                    <button
+                        onClick={() => setView("overview")}
+                        className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                            view === "overview" ? "bg-white text-slate-800 shadow-sm" : "text-slate-600 hover:text-slate-900"
+                        }`}
+                    >
+                        Overview Cards ({items.length})
+                    </button>
+                    <button
+                        onClick={() => setView("biosensing")}
+                        className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                            view === "biosensing" ? "bg-white text-brand-600 shadow-sm" : "text-slate-600 hover:text-slate-900"
+                        }`}
+                    >
+                        🔬 Biosensing Page
+                    </button>
+                    <button
+                        onClick={() => setView("biomechanics")}
+                        className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                            view === "biomechanics" ? "bg-white text-brand-600 shadow-sm" : "text-slate-600 hover:text-slate-900"
+                        }`}
+                    >
+                        🐛 Biomechanics Page
+                    </button>
+                    <button
+                        onClick={() => setView("bioinspiration")}
+                        className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                            view === "bioinspiration" ? "bg-white text-brand-600 shadow-sm" : "text-slate-600 hover:text-slate-900"
+                        }`}
+                    >
+                        🍃 Bioinspiration Page
+                    </button>
                 </div>
             </div>
 
-            {showForm && (
-                <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6">
-                    <h3 className="text-sm font-semibold text-slate-700 mb-4">{editing ? "Edit Area" : "New Research Area"}</h3>
-                    <div className="flex flex-col sm:flex-row gap-6 mb-4">
-                        <div className="flex flex-col items-center gap-3">
-                            <div className="w-24 h-24 rounded-2xl bg-white border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden">
-                                {form.photoUrl ? (
-                                    <img src={form.photoUrl} alt="Cover" className="w-full h-full object-cover" />
-                                ) : (
-                                    <span className="text-3xl text-slate-300">🖼️</span>
-                                )}
-                            </div>
-                            <div>
-                                <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
-                                <Btn variant="secondary" size="sm" onClick={() => fileInputRef.current?.click()} disabled={uploading}>
-                                    {uploading ? "Uploading..." : "Upload Image"}
-                                </Btn>
-                            </div>
-                        </div>
-                        <div className="flex-1 flex flex-col gap-4 justify-center">
-                            <Input label="Title" value={form.title} onChange={(v) => setForm((f) => ({ ...f, title: v }))} placeholder="Research area name…" />
-                        </div>
-                    </div>
-                    <Textarea label="Description" value={form.description} onChange={(v) => setForm((f) => ({ ...f, description: v }))} placeholder="Brief description…" />
-                    <div className="flex gap-2 mt-5">
-                        <Btn onClick={save} disabled={saving || !form.title} className={(saving || !form.title) ? "opacity-50" : ""}>{saving ? "Saving…" : editing ? "Save Changes" : "Add"}</Btn>
-                        <Btn variant="secondary" onClick={cancel}>Cancel</Btn>
-                    </div>
-                </div>
-            )}
+            {/* View Dispatcher */}
+            {view === "biosensing" && <BiosensingEditor />}
+            {view === "biomechanics" && <BiomechanicsEditor />}
+            {view === "bioinspiration" && <BioinspirationEditor />}
 
-            {loading ? (
-                <div className="flex items-center justify-center py-16 text-slate-400 text-sm">Loading…</div>
-            ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {items.length === 0 && !showForm && <div className="col-span-2 text-center py-12 text-slate-400 text-sm">No research areas yet. Click &quot;+ Add Area&quot; to get started.</div>}
-                    {items.map((r) => (
-                        <div key={r.id} className="flex gap-4 p-5 bg-white border border-slate-200 rounded-2xl hover:border-slate-300 transition-colors items-center">
-                            <div className="w-16 h-16 rounded-xl bg-slate-50 flex items-center justify-center text-2xl overflow-hidden shrink-0 border border-slate-100">
-                                {r.photoUrl ? (
-                                    <img src={r.photoUrl} alt={r.title} className="w-full h-full object-cover" />
-                                ) : (
-                                    "🔬"
-                                )}
+            {view === "overview" && (
+                <div className="flex flex-col gap-6">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h2 className="text-lg font-semibold text-slate-800">Research Overview Cards <Badge color="green">{items.length}</Badge></h2>
+                            <p className="text-xs text-slate-500">Cards shown on the main /research page & homepage</p>
+                        </div>
+                        <div className="flex gap-2">
+                            <Btn variant="secondary" size="sm" onClick={load}>↻ Refresh</Btn>
+                            {!showForm && <Btn onClick={() => { setAdding(true); setEditing(null); }}>+ Add Area</Btn>}
+                        </div>
+                    </div>
+
+                    {showForm && (
+                        <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6">
+                            <h3 className="text-sm font-semibold text-slate-700 mb-4">{editing ? "Edit Area" : "New Research Area"}</h3>
+                            <div className="flex flex-col sm:flex-row gap-6 mb-4">
+                                <div className="flex flex-col items-center gap-3">
+                                    <div className="w-24 h-24 rounded-2xl bg-white border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden">
+                                        {form.photoUrl ? (
+                                            // eslint-disable-next-line @next/next/no-img-element
+                                            <img src={form.photoUrl} alt="Cover" className="w-full h-full object-cover" />
+                                        ) : (
+                                            <span className="text-3xl text-slate-300">🖼️</span>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
+                                        <Btn variant="secondary" size="sm" onClick={() => fileInputRef.current?.click()} disabled={uploading}>
+                                            {uploading ? "Uploading..." : "Upload Image"}
+                                        </Btn>
+                                    </div>
+                                </div>
+                                <div className="flex-1 flex flex-col gap-4 justify-center">
+                                    <Input label="Title" value={form.title} onChange={(v) => setForm((f) => ({ ...f, title: v }))} placeholder="Research area name…" />
+                                </div>
                             </div>
-                            <div className="flex-1 min-w-0">
-                                <p className="text-sm font-semibold text-slate-800">{r.title}</p>
-                                <p className="text-xs text-slate-500 mt-0.5 leading-relaxed truncate">{r.description}</p>
-                            </div>
-                            <div className="flex gap-1 shrink-0">
-                                <Btn variant="ghost" size="sm" onClick={() => edit(r)}>✏️</Btn>
-                                <Btn variant="danger" size="sm" onClick={() => del(r.id)}>🗑</Btn>
+                            <Textarea label="Description" value={form.description} onChange={(v) => setForm((f) => ({ ...f, description: v }))} placeholder="Brief description…" />
+                            <div className="flex gap-2 mt-5">
+                                <Btn onClick={save} disabled={saving || !form.title} className={(saving || !form.title) ? "opacity-50" : ""}>{saving ? "Saving…" : editing ? "Save Changes" : "Add"}</Btn>
+                                <Btn variant="secondary" onClick={cancel}>Cancel</Btn>
                             </div>
                         </div>
-                    ))}
+                    )}
+
+                    {loading ? (
+                        <div className="flex items-center justify-center py-16 text-slate-400 text-sm">Loading…</div>
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            {items.length === 0 && !showForm && <div className="col-span-2 text-center py-12 text-slate-400 text-sm">No research areas yet. Click &quot;+ Add Area&quot; to get started.</div>}
+                            {items.map((r) => {
+                                const slug = r.title.toLowerCase().trim();
+                                const hasSubpage = ["biosensing", "biomechanics", "bioinspiration"].includes(slug);
+                                return (
+                                    <div key={r.id} className="flex gap-4 p-5 bg-white border border-slate-200 rounded-2xl hover:border-slate-300 transition-colors items-center">
+                                        <div className="w-16 h-16 rounded-xl bg-slate-50 flex items-center justify-center text-2xl overflow-hidden shrink-0 border border-slate-100">
+                                            {r.photoUrl ? (
+                                                // eslint-disable-next-line @next/next/no-img-element
+                                                <img src={r.photoUrl} alt={r.title} className="w-full h-full object-cover" />
+                                            ) : (
+                                                "🔬"
+                                            )}
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex items-center gap-2">
+                                                <p className="text-sm font-semibold text-slate-800">{r.title}</p>
+                                                {hasSubpage && (
+                                                    <button
+                                                        onClick={() => setView(slug as SubView)}
+                                                        className="text-[11px] text-brand-600 font-semibold bg-brand-50 hover:bg-brand-100 px-2 py-0.5 rounded-full transition-colors"
+                                                    >
+                                                        Edit Page Content →
+                                                    </button>
+                                                )}
+                                            </div>
+                                            <p className="text-xs text-slate-500 mt-0.5 leading-relaxed truncate">{r.description}</p>
+                                        </div>
+                                        <div className="flex gap-1 shrink-0">
+                                            <Btn variant="ghost" size="sm" onClick={() => edit(r)}>✏️</Btn>
+                                            <Btn variant="danger" size="sm" onClick={() => del(r.id)}>🗑</Btn>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
                 </div>
             )}
         </div>
